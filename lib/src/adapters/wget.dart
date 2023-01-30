@@ -6,20 +6,30 @@ import 'package:dloader/dloader.dart';
 import 'package:dloader/src/dloader_adapter.dart';
 import 'package:executable/executable.dart';
 
+/// This class implements [DloaderAdapter] for downloading using wget.
 class WgetAdapter implements DloaderAdapter {
+  /// The [Executable] object representing the `wget` executable.
   @override
   Executable executable = Executable('wget');
 
+  /// Whether the wget executable is available on the system.
   @override
   late final bool isAvailable;
 
+  /// The path to the wget executable.
   @override
   late final String executablePath;
 
+  /// Constructor that initializes the [isAvailable] flag.
   WgetAdapter() {
     isAvailable = executable.existsSync();
   }
 
+  /// Downloads a file with Wget.
+  /// - url: The URL of the file to download.
+  /// - destination: The destination file.
+  /// - segments: The number of segments to download the file with.
+  /// - onProgress: A function that is called with the download progress.
   @override
   Future<File> download(
       {required String url,
@@ -45,6 +55,7 @@ class WgetAdapter implements DloaderAdapter {
     return destination;
   }
 
+  /// Parses the progress string from wget.
   Map<String, String> parseWgetProgress(String progressString) {
     final Map<String, String> progress = {};
     final match = RegExp(

@@ -3,22 +3,33 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dloader/src/dloader_adapter.dart';
+import 'package:dloader/src/dloader_base.dart';
 import 'package:executable/executable.dart';
 
+/// This class implements [DloaderAdapter] for downloading using curl.
 class CurlAdapter implements DloaderAdapter {
+  /// The [Executable] object representing the `curl` executable.
   @override
   Executable executable = Executable('curl');
 
+  /// Whether the curl executable is available on the system.
   @override
   late final bool isAvailable;
 
+  /// The path to the curl executable.
   @override
   late final String executablePath;
 
+  /// Constructor that initializes the [isAvailable] flag.
   CurlAdapter() {
     isAvailable = executable.existsSync();
   }
 
+  /// Downloads a file with Curl.
+  /// - url: The URL of the file to download.
+  /// - destination: The destination file.
+  /// - segments: The number of segments to download the file with.
+  /// - onProgress: A function that is called with the download progress.
   @override
   Future<File> download(
       {required String url,
@@ -30,6 +41,7 @@ class CurlAdapter implements DloaderAdapter {
       '--create-dirs',
       '--location',
       '--output',
+      '--user-agent=${Dloader.userAgent}',
       destination.path,
       url
     ]).then((Process process) {
@@ -44,6 +56,7 @@ class CurlAdapter implements DloaderAdapter {
     return destination;
   }
 
+  /// Parses the progress string from curl and returns a [Map] with the progress
   Map<String, String> parseCurlProgress(String progressString) {
     final Map<String, String> progress = {};
     final match = RegExp(

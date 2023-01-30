@@ -3,6 +3,7 @@ import 'package:test/test.dart';
 import 'package:dloader/dloader.dart';
 import 'package:dloader/src/adapters/dio.dart';
 
+/// Tests for the [Dloader] class.
 void main() {
   test('Test Dloader with DioAdapter and valid URL', () async {
     final dloader = Dloader(DioAdapter());
@@ -23,7 +24,7 @@ void main() {
   test('Test Dloader with DioAdapter and invalid URL', () async {
     expect(() async {
       final dloader = Dloader(DioAdapter());
-      final url = 'https://invalid.com/file.dat';
+      final url = 'https://invalid.supersite/file.dat';
       final destination = File('/tmp/file.dat');
 
       await dloader.download(

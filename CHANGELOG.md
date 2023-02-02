@@ -1,4 +1,4 @@
-### 1.04
+## 1.0.4
 - Fix missing adapter classes export
 ## 1.0.3
 - Dart Pub conventions

@@ -1,5 +1,5 @@
-## 1.0.4
-- Fix missing adapter classes export
+unfix
+1.0.4
 ## 1.0.3
 - Dart Pub conventions
 ## 1.0.2

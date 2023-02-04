@@ -1,3 +1,5 @@
+Fix missing file return from adapters
+1.1.0
 ## 1.0.5
 - Export adapter classes
 ## 1.0.4

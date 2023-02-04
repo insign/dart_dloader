@@ -1,6 +1,6 @@
 name: dloader
 description: A simple and versatile library for downloading files with support for adapters including dio, curl, wget, powershell, aria2 and axel. Feel free to create new adapters.
-version: 1.0.5
+version: 1.1.0
 repository: https://github.com/insign/dart_dloader
 homepage: https://github.com/insign/dart_dloader
 

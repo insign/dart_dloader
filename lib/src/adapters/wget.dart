@@ -36,7 +36,7 @@ class WgetAdapter implements DloaderAdapter {
       int? segments,
       Function(Map<String, dynamic>)? onProgress}) async {
     executablePath = (await executable.find())!;
-    Process.start(executablePath, [
+    return Process.start(executablePath, [
       '--continue',
       '--output-document=${destination.path}',
       '--user-agent=${Dloader.userAgent}',
@@ -49,9 +49,8 @@ class WgetAdapter implements DloaderAdapter {
           onProgress?.call(parseWgetProgress(line));
         }
       });
+      return destination;
     });
-
-    return destination;
   }
 
   /// Parses the progress string from wget.

@@ -39,7 +39,7 @@ class AxelAdapter implements DloaderAdapter {
       destination.deleteSync();
     }
 
-    Process.start(executablePath, [
+    return Process.start(executablePath, [
       url,
       '--num-connections=$segments',
       '--output=${destination.path}',
@@ -52,9 +52,9 @@ class AxelAdapter implements DloaderAdapter {
           onProgress?.call(parseAxelProgress(line));
         }
       });
-    });
 
-    return destination;
+      return destination;
+    });
   }
 
   /// Parses the progress string from axel and returns a [Map] with the progress information.

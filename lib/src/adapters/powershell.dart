@@ -37,7 +37,7 @@ class PowerShellAdapter implements DloaderAdapter {
       int? segments,
       Function(Map<String, dynamic>)? onProgress}) async {
     executablePath = (await executable.find())!;
-    Process.start(executablePath, [
+    return Process.start(executablePath, [
       '-Command',
       'Start-BitsTransfer -Source $url -Destination ${destination.path} -UserAgent ${Dloader.userAgent}'
     ]).then((Process process) {
@@ -47,9 +47,8 @@ class PowerShellAdapter implements DloaderAdapter {
           onProgress?.call(parsePowerShellProgress(line));
         }
       });
+      return destination;
     });
-
-    return destination;
   }
 
   /// Parses the progress string from the powershell output.

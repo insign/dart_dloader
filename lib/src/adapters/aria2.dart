@@ -29,7 +29,7 @@ class Aria2Adapter implements DloaderAdapter {
   /// Downloads a file with Aria2.
   ///
   /// - url: The URL of the file to download.
-  /// - destination: The destination file.
+  /// - [destination]: The destination file.
   /// - segments: The number of segments to download the file with.
   /// - onProgress: A function that is called with the download progress.
   @override
@@ -42,7 +42,7 @@ class Aria2Adapter implements DloaderAdapter {
     final filename = path.basename(destination.path);
     final directory = path.dirname(destination.path);
 
-    Process.start(executablePath, [
+    return Process.start(executablePath, [
       '--max-connection-per-server=$segments',
       '--split=$segments',
       '--min-split-size=1M',
@@ -66,9 +66,9 @@ class Aria2Adapter implements DloaderAdapter {
           onProgress?.call(parseAria2Progress(line));
         }
       });
-    });
 
-    return destination;
+      return destination;
+    });
   }
 
   /// Parses the progress string output by the aria2c executable and returns a [Map] containing the progress information.

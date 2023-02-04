@@ -37,7 +37,7 @@ class CurlAdapter implements DloaderAdapter {
       int? segments,
       Function(Map<String, dynamic>)? onProgress}) async {
     executablePath = (await executable.find())!;
-    Process.start(executablePath, [
+    return Process.start(executablePath, [
       '--create-dirs',
       '--location',
       '--output',
@@ -51,9 +51,9 @@ class CurlAdapter implements DloaderAdapter {
           onProgress?.call(parseCurlProgress(line));
         }
       });
-    });
 
-    return destination;
+      return destination;
+    });
   }
 
   /// Parses the progress string from curl and returns a [Map] with the progress

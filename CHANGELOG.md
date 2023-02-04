@@ -1,7 +1,7 @@
-Export adapter classes
-1.0.5
-unfix
-1.0.4
+## 1.0.5
+- Export adapter classes
+## 1.0.4
+- unfix
 ## 1.0.3
 - Dart Pub conventions
 ## 1.0.2

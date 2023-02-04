@@ -10,7 +10,6 @@ dart pub add dloader
 ```dart
 import 'dart:io';
 import 'package:dloader/dloader.dart';
-import 'package:dloader/src/adapters/curl.dart';
 
 void main() {
   final dloader = Dloader(CurlAdapter());

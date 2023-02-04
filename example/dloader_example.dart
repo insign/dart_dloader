@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:dloader/dloader.dart';
-import 'package:dloader/src/adapters/dio.dart';
 
 void main() {
   final dloader = Dloader(DioAdapter());

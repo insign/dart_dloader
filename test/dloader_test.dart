@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:test/test.dart';
 import 'package:dloader/dloader.dart';
-import 'package:dloader/src/adapters/dio.dart';
 
 /// Tests for the [Dloader] class.
 void main() {

@@ -3,22 +3,27 @@ name: Publish to pub.dev
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+*'
+    # must align with the tag-pattern configured on pub.dev, often just replace
+    #  with [0-9]+.[0-9]+.[0-9]+*
+    - 'v[0-9]+.[0-9]+.[0-9]+*' # tag-pattern on pub.dev: 'v'
+    # If you prefer tags like '1.2.3', without the 'v' prefix, then use:
+    # - '[0-9]+.[0-9]+.[0-9]+*' # tag-pattern on pub.dev: ''
+    # If you repository contains multiple packages consider a pattern like:
+    # - 'my_package_name-v[0-9]+.[0-9]+.[0-9]+*'
 
+# Publish using the reusable workflow from dart-lang.
 jobs:
   publish:
-    permissions:
-      id-token: write # This is required for authentication using OIDC
     uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
     # with:
     #   working-directory: path/to/package/within/repository
   notify:
-    name: Notify on Telegram
     if: cancelled() == false
     needs: publish
-    uses: xinthink/action-telegram@v1.1
-    with:
-      botToken: ${{ secrets.BOT_TOKEN }}
-      chatId: ${{ secrets.CHAT_ID }}
-      jobStatus: ${{ job.status }}
-      skipSuccess: false
+    runs-on: ubuntu-latest
+    steps:
+    - uses: xinthink/action-telegram@v1.1
+      with:
+        botToken: ${{ secrets.BotToken }}
+        chatId: ${{ secrets.ChatID }}
+        jobStatus: ${{ job.status }}

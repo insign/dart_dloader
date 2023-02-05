@@ -14,21 +14,11 @@ jobs:
     # with:
     #   working-directory: path/to/package/within/repository
   notify:
-    name: Build
+    name: Notify the commit on Telegram
     runs-on: ubuntu-latest
+    if: always()
     steps:
-      - name: send telegram message on push
-        uses: appleboy/telegram-action@master
-        if: always()
-        with:
-          to: ${{ secrets.CHAT_ID }}
-          token: ${{ secrets.BOT_TOKEN }}
-          message: |
-            ${{ github.actor }} created commit:
-            Commit message: ${{ github.event.commits[0].message }}
-
-            Status: ${{ job.status }}
-            
-            Repository: ${{ github.repository }}
-            
-            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+     - uses: EverythingSuckz/github-telegram-notify@main
+       with:
+        bot_token: '${{ secrets.BOT_TOKEN }}'
+        chat_id: '${{ secrets.CHAT_ID }}'

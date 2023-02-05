@@ -12,3 +12,13 @@ jobs:
     uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
     # with:
     #   working-directory: path/to/package/within/repository
+  notify:
+    name: Notify on Telegram
+    if: cancelled() == false
+    needs: publish
+    uses: xinthink/action-telegram@v1.1
+    with:
+      botToken: ${{ secrets.BOT_TOKEN }}
+      chatId: ${{ secrets.CHAT_ID }}
+      jobStatus: ${{ job.status }}
+      skipSuccess: false

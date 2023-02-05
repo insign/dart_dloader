@@ -19,12 +19,15 @@ jobs:
     steps:
       - name: send telegram message on push
         uses: appleboy/telegram-action@master
+        if: always()
         with:
           to: ${{ secrets.CHAT_ID }}
           token: ${{ secrets.BOT_TOKEN }}
           message: |
             ${{ github.actor }} created commit:
             Commit message: ${{ github.event.commits[0].message }}
+
+            Status: ${{ job.status }}
             
             Repository: ${{ github.repository }}
             

@@ -1,3 +1,5 @@
+## v1.1.2
+- Testing github actions notification
 ## v1.1.1
 - Fix missing file return from adapters
 Fix missing file return from adapters

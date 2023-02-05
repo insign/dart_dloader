@@ -15,7 +15,6 @@ jobs:
     #   working-directory: path/to/package/within/repository
   notify:
     if: cancelled() == false
-    needs: publish
     runs-on: ubuntu-latest
     steps:
     - uses: xinthink/action-telegram@v1.1
@@ -23,3 +22,4 @@ jobs:
         botToken: ${{ secrets.BotToken }}
         chatId: ${{ secrets.ChatID }}
         jobStatus: ${{ job.status }}
+        skipSuccess: false

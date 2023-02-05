@@ -37,27 +37,27 @@ class CurlAdapter implements DloaderAdapter {
       int? segments,
       Function(Map<String, dynamic>)? onProgress}) async {
     executablePath = (await executable.find())!;
-    return Process.start(executablePath, [
+    final process = await Process.start(executablePath, [
       '--create-dirs',
       '--location',
       '--output',
       '--user-agent=${Dloader.userAgent}',
       destination.path,
       url
-    ]).then((Process process) {
-      process.stderr.transform(utf8.decoder).listen((data) {
-        final lines = data.split('\n');
-        for (final line in lines) {
-          onProgress?.call(parseCurlProgress(line));
-        }
-      });
+    ]);
 
-      return destination;
-    });
+    await for (var data in process.stdout.transform(utf8.decoder)) {
+      final lines = data.split('\n');
+      for (final line in lines) {
+        onProgress?.call(parseProgress(line));
+      }
+    }
+
+    return destination;
   }
 
   /// Parses the progress string from curl and returns a [Map] with the progress
-  Map<String, String> parseCurlProgress(String progressString) {
+  Map<String, String> parseProgress(String progressString) {
     final Map<String, String> progress = {};
     final match = RegExp(
             r'(\d+)\s+([\w.]+)\s+(\d+)\s+([\w.]+)\s+(\d+)\s+(\d+)\s+([\w.]+)\s+(\d+)\s+([0-9:]+)\s+([0-9:]+)\s+([0-9:]+)\s+([\w.]+)')

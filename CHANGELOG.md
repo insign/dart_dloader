@@ -1,3 +1,7 @@
+## v1.1.1
+- Fix missing file return from adapters
+Fix missing file return from adapters
+1.1.0
 Fix missing file return from adapters
 1.1.0
 ## 1.0.5

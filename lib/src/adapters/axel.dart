@@ -39,26 +39,26 @@ class AxelAdapter implements DloaderAdapter {
       destination.deleteSync();
     }
 
-    return Process.start(executablePath, [
+    final process = await Process.start(executablePath, [
       url,
       '--num-connections=$segments',
       '--output=${destination.path}',
       '--percentage',
       '--user-agent=${Dloader.userAgent}',
-    ]).then((Process process) {
-      process.stdout.transform(utf8.decoder).listen((data) {
-        final lines = data.split('\n');
-        for (final line in lines) {
-          onProgress?.call(parseAxelProgress(line));
-        }
-      });
+    ]);
 
-      return destination;
-    });
+    await for (var data in process.stdout.transform(utf8.decoder)) {
+      final lines = data.split('\n');
+      for (final line in lines) {
+        onProgress?.call(parseProgress(line));
+      }
+    }
+
+    return destination;
   }
 
   /// Parses the progress string from axel and returns a [Map] with the progress information.
-  Map<String, dynamic> parseAxelProgress(String progressString) {
+  Map<String, dynamic> parseProgress(String progressString) {
     final Map<String, String> progress = {};
     if (int.tryParse(progressString) != null) {
       progress["percentComplete"] = progressString;

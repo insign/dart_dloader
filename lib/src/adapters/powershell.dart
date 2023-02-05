@@ -37,22 +37,23 @@ class PowerShellAdapter implements DloaderAdapter {
       int? segments,
       Function(Map<String, dynamic>)? onProgress}) async {
     executablePath = (await executable.find())!;
-    return Process.start(executablePath, [
+    final process = await Process.start(executablePath, [
       '-Command',
       'Start-BitsTransfer -Source $url -Destination ${destination.path} -UserAgent ${Dloader.userAgent}'
-    ]).then((Process process) {
-      process.stderr.transform(utf8.decoder).listen((data) {
-        final lines = data.split('\n');
-        for (final line in lines) {
-          onProgress?.call(parsePowerShellProgress(line));
-        }
-      });
-      return destination;
-    });
+    ]);
+
+    await for (var data in process.stdout.transform(utf8.decoder)) {
+      final lines = data.split('\n');
+      for (final line in lines) {
+        onProgress?.call(parseProgress(line));
+      }
+    }
+
+    return destination;
   }
 
   /// Parses the progress string from the powershell output.
-  Map<String, String> parsePowerShellProgress(String progressString) {
+  Map<String, String> parseProgress(String progressString) {
     final Map<String, String> progress = {};
     final match = RegExp(r'\d+%').firstMatch(progressString);
     if (match != null) {

@@ -1,3 +1,7 @@
+## v1.1.4
+- fix: wrong curl parameters pass
+## v1.1.3
+- Testing github actions notification
 ## v1.1.3
 - Testing github actions notification
 ## v1.1.2

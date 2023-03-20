@@ -40,8 +40,9 @@ class CurlAdapter implements DloaderAdapter {
     final process = await Process.start(executablePath, [
       '--create-dirs',
       '--location',
+      '--user-agent',
+      Dloader.userAgent,
       '--output',
-      '--user-agent=${Dloader.userAgent}',
       destination.path,
       url
     ]);

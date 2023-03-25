@@ -1,3 +1,5 @@
+## v1.2.0
+- fix!\:dio updated from 4 to 5
 ## v1.1.4
 - fix: wrong curl parameters pass
 ## v1.1.3

@@ -34,6 +34,7 @@ class CurlAdapter implements DloaderAdapter {
   Future<File> download(
       {required String url,
       required File destination,
+      String? userAgent,
       int? segments,
       Function(Map<String, dynamic>)? onProgress}) async {
     executablePath = (await executable.find())!;
@@ -41,7 +42,7 @@ class CurlAdapter implements DloaderAdapter {
       '--create-dirs',
       '--location',
       '--user-agent',
-      Dloader.userAgent,
+      userAgent ?? Dloader.userAgentDefault,
       '--output',
       destination.path,
       url

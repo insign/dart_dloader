@@ -33,10 +33,11 @@ class DioAdapter implements DloaderAdapter {
   Future<File> download(
       {required String url,
       required File destination,
+      String? userAgent,
       int? segments,
       Function(Map<String, dynamic>)? onProgress}) async {
     final dio = Dio();
-    dio.options.headers["User-Agent"] = Dloader.userAgent;
+    dio.options.headers["User-Agent"] = userAgent ?? Dloader.userAgentDefault;
     try {
       await dio.download(url, destination.path,
           onReceiveProgress: (received, total) {

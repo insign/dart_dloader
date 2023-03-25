@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dloader/src/dloader_adapter.dart';
-import 'package:dloader/src/dloader_base.dart';
 import 'package:executable/executable.dart';
 import 'package:path/path.dart' as path;
 
@@ -36,6 +35,7 @@ class Aria2Adapter implements DloaderAdapter {
   Future<File> download(
       {required String url,
       required File destination,
+      String? userAgent,
       int? segments,
       Function(Map<String, dynamic>)? onProgress}) async {
     executablePath = (await executable.find())!;
@@ -49,7 +49,7 @@ class Aria2Adapter implements DloaderAdapter {
       '--dir=$directory',
       '--out=$filename',
       '--file-allocation=falloc',
-      '--user-agent=${Dloader.userAgent}',
+      '--user-agent=$userAgent',
       '--continue=true',
       '--auto-file-renaming=false',
       '--allow-overwrite=true',

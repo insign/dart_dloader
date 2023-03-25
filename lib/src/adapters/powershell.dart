@@ -34,12 +34,13 @@ class PowerShellAdapter implements DloaderAdapter {
   Future<File> download(
       {required String url,
       required File destination,
+      String? userAgent,
       int? segments,
       Function(Map<String, dynamic>)? onProgress}) async {
     executablePath = (await executable.find())!;
     final process = await Process.start(executablePath, [
       '-Command',
-      'Start-BitsTransfer -Source $url -Destination ${destination.path} -UserAgent ${Dloader.userAgent}'
+      'Start-BitsTransfer -Source $url -Destination ${destination.path} -UserAgent $userAgent'
     ]);
 
     await for (var data in process.stdout.transform(utf8.decoder)) {

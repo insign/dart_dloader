@@ -31,6 +31,7 @@ class AxelAdapter implements DloaderAdapter {
   Future<File> download(
       {required String url,
       required File destination,
+      String? userAgent,
       int? segments,
       Function(Map<String, dynamic>)? onProgress}) async {
     executablePath = (await executable.find())!;
@@ -44,7 +45,7 @@ class AxelAdapter implements DloaderAdapter {
       '--num-connections=$segments',
       '--output=${destination.path}',
       '--percentage',
-      '--user-agent=${Dloader.userAgent}',
+      '--user-agent=$userAgent',
     ]);
 
     await for (var data in process.stdout.transform(utf8.decoder)) {

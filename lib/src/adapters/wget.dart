@@ -33,13 +33,14 @@ class WgetAdapter implements DloaderAdapter {
   Future<File> download(
       {required String url,
       required File destination,
+      String? userAgent,
       int? segments,
       Function(Map<String, dynamic>)? onProgress}) async {
     executablePath = (await executable.find())!;
     final process = await Process.start(executablePath, [
       '--continue',
       '--output-document=${destination.path}',
-      '--user-agent=${Dloader.userAgent}',
+      '--user-agent=$userAgent',
       '--progress=bar:force',
       url
     ]);

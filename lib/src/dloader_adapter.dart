@@ -20,6 +20,7 @@ abstract class DloaderAdapter {
   Future<File> download({
     required String url,
     required File destination,
+    String? userAgent,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
   });

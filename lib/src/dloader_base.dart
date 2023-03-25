@@ -4,9 +4,9 @@ import 'package:dloader/src/dloader_adapter.dart';
 
 /// A class that allows downloading a file from a URL, with an adapter implementation
 class Dloader {
-  /// The User Agent string used in the download request
-  static String userAgent =
-      'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36';
+  /// The user agent to use when downloading the file
+  static String userAgentDefault =
+      'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36';
 
   /// The callback that will be called on every progress update
   Function(double, int)? onProgress;
@@ -29,12 +29,15 @@ class Dloader {
   Future<File> download(
       {required String url,
       required File destination,
+      String? userAgent,
       int? segments,
       Function(Map<String, dynamic>)? onProgress}) async {
     if (!adapter.isAvailable) {
       throw Exception(
           'Dloader adapter ${adapter.executable.cmd} not available');
     }
+
+    userAgent = userAgent ?? Dloader.userAgentDefault;
 
     segments = (segments ?? 1).abs();
 
@@ -44,6 +47,7 @@ class Dloader {
     return await adapter.download(
         url: url,
         destination: destination,
+        userAgent: userAgent,
         segments: segments,
         onProgress: onProgress);
   }

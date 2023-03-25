@@ -1,3 +1,5 @@
+## v1.2.1
+- support for custom user-agent
 ## v1.2.0
 - fix!\:dio updated from 4 to 5
 ## v1.1.4

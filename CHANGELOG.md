@@ -1,3 +1,5 @@
+## v1.2.3
+- feat: support for not send user-agent
 ## v1.2.1
 - support for custom user-agent
 ## v1.2.0

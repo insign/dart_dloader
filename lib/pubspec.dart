@@ -2,7 +2,7 @@
 const name = 'dloader';
 const description =
     'A simple and versatile library for downloading files with support for adapters including dio, curl, wget, powershell, aria2 and axel. Feel free to create new adapters.';
-const version = '1.2.1';
+const version = '1.2.3';
 const repository = 'https://github.com/insign/dart_dloader';
 const homepage = 'https://github.com/insign/dart_dloader';
 const environment = '{sdk: >=2.18.6 <3.1.0}';

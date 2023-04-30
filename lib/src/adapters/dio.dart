@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:dloader/src/dloader_adapter.dart';
-import 'package:dloader/src/dloader_base.dart';
 import 'package:executable/executable.dart';
 
 /// This class implements the [DloaderAdapter] interface for downloading using [Dio].

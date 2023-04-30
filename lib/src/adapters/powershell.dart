@@ -40,7 +40,7 @@ class PowerShellAdapter implements DloaderAdapter {
     executablePath = (await executable.find())!;
     final process = await Process.start(executablePath, [
       '-Command',
-      'Start-BitsTransfer -Source $url -Destination ${destination.path} -UserAgent $userAgent'
+      'Start-BitsTransfer -Source $url -Destination ${destination.path} ${userAgent != null ? "-UserAgent $userAgent" : ""}}'
     ]);
 
     await for (var data in process.stdout.transform(utf8.decoder)) {

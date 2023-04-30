@@ -45,7 +45,7 @@ class AxelAdapter implements DloaderAdapter {
       '--num-connections=$segments',
       '--output=${destination.path}',
       '--percentage',
-      '--user-agent=$userAgent',
+      userAgent != null ? '--user-agent=$userAgent' : '',
     ]);
 
     await for (var data in process.stdout.transform(utf8.decoder)) {

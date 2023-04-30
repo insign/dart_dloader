@@ -49,7 +49,7 @@ class Aria2Adapter implements DloaderAdapter {
       '--dir=$directory',
       '--out=$filename',
       '--file-allocation=falloc',
-      '--user-agent=$userAgent',
+      userAgent != null ? '--user-agent=$userAgent' : '',
       '--continue=true',
       '--auto-file-renaming=false',
       '--allow-overwrite=true',

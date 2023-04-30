@@ -40,7 +40,7 @@ class WgetAdapter implements DloaderAdapter {
     final process = await Process.start(executablePath, [
       '--continue',
       '--output-document=${destination.path}',
-      '--user-agent=$userAgent',
+      userAgent != null ? '--user-agent=$userAgent' : '',
       '--progress=bar:force',
       url
     ]);

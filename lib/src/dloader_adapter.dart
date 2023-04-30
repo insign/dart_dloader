@@ -13,10 +13,15 @@ abstract class DloaderAdapter {
   /// Path to the executable.
   late final String executablePath;
 
-  /// Downloads the file from the given `url` to the specified `destination` file.
+  /// Downloads the file from the given [url] to the specified [destination] file.
   ///
-  /// `segments` (optional) specifies the number of segments to download in parallel.
-  /// `onProgress` (optional) is a callback that receives progress information during the download.
+  /// [url] is the URL of the file to download.
+  /// [destination] is the destination file.
+  /// [userAgent] (optional) is the user agent to use for the download.
+  /// [segments] (optional) is the number of segments to download the file in.
+  /// [onProgress] (optional) is a function that is called with the download progress.
+  ///
+  /// Returns a [Future] that completes with the downloaded file.
   Future<File> download({
     required String url,
     required File destination,

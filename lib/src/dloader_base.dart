@@ -30,6 +30,7 @@ class Dloader {
       {required String url,
       required File destination,
       String? userAgent,
+      bool disableUserAgent = false,
       int? segments,
       Function(Map<String, dynamic>)? onProgress}) async {
     if (!adapter.isAvailable) {
@@ -37,7 +38,9 @@ class Dloader {
           'Dloader adapter ${adapter.executable.cmd} not available');
     }
 
-    userAgent = userAgent ?? Dloader.userAgentDefault;
+    if (!disableUserAgent) {
+      userAgent ??= Dloader.userAgentDefault;
+    }
 
     segments = (segments ?? 1).abs();
 

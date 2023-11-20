@@ -34,8 +34,7 @@ class Dloader {
       int? segments,
       Function(Map<String, dynamic>)? onProgress}) async {
     if (!adapter.isAvailable) {
-      throw Exception(
-          'Dloader adapter ${adapter.executable.cmd} not available');
+      throw Exception('Dloader adapter ${adapter.executable.cmd} not available');
     }
 
     if (!disableUserAgent) {
@@ -48,10 +47,6 @@ class Dloader {
       throw Exception('URL not provided');
     }
     return await adapter.download(
-        url: url,
-        destination: destination,
-        userAgent: userAgent,
-        segments: segments,
-        onProgress: onProgress);
+        url: url, destination: destination, userAgent: userAgent, segments: segments, onProgress: onProgress);
   }
 }

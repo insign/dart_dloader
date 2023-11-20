@@ -40,12 +40,10 @@ class DioAdapter implements DloaderAdapter {
       dio.options.headers["User-Agent"] = userAgent;
     }
     try {
-      await dio.download(url, destination.path,
-          onReceiveProgress: (received, total) {
+      await dio.download(url, destination.path, onReceiveProgress: (received, total) {
         final Map<String, String> progress = {};
         if (total != -1) {
-          progress['percentComplete'] =
-              (received / total * 100).toStringAsFixed(0);
+          progress['percentComplete'] = (received / total * 100).toStringAsFixed(0);
           progress['downloaded'] = received.toString();
           progress['totalSize'] = total.toString();
           onProgress?.call(progress);

@@ -58,9 +58,8 @@ class WgetAdapter implements DloaderAdapter {
   /// Parses the progress string from wget.
   Map<String, String> parseProgress(String progressString) {
     final Map<String, String> progress = {};
-    final match = RegExp(
-            r'.+\s+(\d+)%[^\]]+\]\s+([\w,]+)\s+([\w,]+/s)\s+(?:eta\s([\w\s]+))?')
-        .firstMatch(progressString);
+    final match =
+        RegExp(r'.+\s+(\d+)%[^\]]+\]\s+([\w,]+)\s+([\w,]+/s)\s+(?:eta\s([\w\s]+))?').firstMatch(progressString);
     if (match != null && match.groupCount >= 3) {
       progress["percentComplete"] = match.group(1)!;
       progress["downloaded"] = match.group(2)!;

@@ -1,3 +1,5 @@
+## v1.2.4
+- pub upgrade
 ## v1.2.3
 - feat: support for not send user-agent
 ## v1.2.1
@@ -14,10 +16,6 @@
 - Testing github actions notification
 ## v1.1.1
 - Fix missing file return from adapters
-Fix missing file return from adapters
-1.1.0
-Fix missing file return from adapters
-1.1.0
 ## 1.0.5
 - Export adapter classes
 ## 1.0.4

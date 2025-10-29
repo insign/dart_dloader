@@ -28,12 +28,13 @@ class AxelAdapter implements DloaderAdapter {
   /// - segments: The number of segments to download the file with.
   /// - onProgress: A function that is called with the download progress.
   @override
-  Future<File> download(
-      {required String url,
-      required File destination,
-      String? userAgent,
-      int? segments,
-      Function(Map<String, dynamic>)? onProgress}) async {
+  Future<File> download({
+    required String url,
+    required File destination,
+    String? userAgent,
+    int? segments,
+    Function(Map<String, dynamic>)? onProgress,
+  }) async {
     executablePath = (await executable.find())!;
 
     if (destination.existsSync()) {

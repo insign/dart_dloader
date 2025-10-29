@@ -9,14 +9,16 @@ void main() {
 
   dloader
       .download(
-          url: url,
-          destination: destination,
-          onProgress: (progress) {
-            print('Percent complete: ${progress['percentComplete']}%');
-          })
+        url: url,
+        destination: destination,
+        onProgress: (progress) {
+          print('Percent complete: ${progress['percentComplete']}%');
+        },
+      )
       .then((File file) {
-    print('File downloaded to: ${file.path}');
-  }).catchError((e) {
-    print('Error downloading file: $e');
-  });
+        print('File downloaded to: ${file.path}');
+      })
+      .catchError((e) {
+        print('Error downloading file: $e');
+      });
 }

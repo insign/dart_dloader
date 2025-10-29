@@ -32,12 +32,13 @@ class Aria2Adapter implements DloaderAdapter {
   /// - segments: The number of segments to download the file with.
   /// - onProgress: A function that is called with the download progress.
   @override
-  Future<File> download(
-      {required String url,
-      required File destination,
-      String? userAgent,
-      int? segments,
-      Function(Map<String, dynamic>)? onProgress}) async {
+  Future<File> download({
+    required String url,
+    required File destination,
+    String? userAgent,
+    int? segments,
+    Function(Map<String, dynamic>)? onProgress,
+  }) async {
     executablePath = (await executable.find())!;
     final filename = path.basename(destination.path);
     final directory = path.dirname(destination.path);
@@ -58,7 +59,7 @@ class Aria2Adapter implements DloaderAdapter {
       '--summary-interval=1',
       // '--log-level=info',
       // '--log=-',
-      url
+      url,
     ]);
 
     await for (var data in process.stdout.transform(utf8.decoder)) {
@@ -75,8 +76,8 @@ class Aria2Adapter implements DloaderAdapter {
   Map<String, String> parseProgress(String progressString) {
     final Map<String, String> progress = {};
     final match = RegExp(
-            r'\[#[a-f0-9]{6}\s(\d+(?:\.\d+)?[a-zA-Z]{1,3})/(\d+(?:\.\d+)?[a-zA-Z]{1,3})\((\d+)%\)\sCN:(\d+)\sDL:(\d+(?:\.\d+)?[a-zA-Z]{1,3})(?:\sETA:(\w+))?]')
-        .firstMatch(progressString);
+      r'\[#[a-f0-9]{6}\s(\d+(?:\.\d+)?[a-zA-Z]{1,3})/(\d+(?:\.\d+)?[a-zA-Z]{1,3})\((\d+)%\)\sCN:(\d+)\sDL:(\d+(?:\.\d+)?[a-zA-Z]{1,3})(?:\sETA:(\w+))?]',
+    ).firstMatch(progressString);
     if (match != null && match.groupCount >= 5) {
       progress["downloaded"] = match.group(1)!;
       progress["totalSize"] = match.group(2)!;

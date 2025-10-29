@@ -31,16 +31,17 @@ class PowerShellAdapter implements DloaderAdapter {
   /// - onProgress: A function that is called with the download progress.
 
   @override
-  Future<File> download(
-      {required String url,
-      required File destination,
-      String? userAgent,
-      int? segments,
-      Function(Map<String, dynamic>)? onProgress}) async {
+  Future<File> download({
+    required String url,
+    required File destination,
+    String? userAgent,
+    int? segments,
+    Function(Map<String, dynamic>)? onProgress,
+  }) async {
     executablePath = (await executable.find())!;
     final process = await Process.start(executablePath, [
       '-Command',
-      'Start-BitsTransfer -Source $url -Destination ${destination.path} ${userAgent != null ? "-UserAgent $userAgent" : ""}}'
+      'Start-BitsTransfer -Source $url -Destination ${destination.path} ${userAgent != null ? "-UserAgent $userAgent" : ""}}',
     ]);
 
     await for (var data in process.stdout.transform(utf8.decoder)) {

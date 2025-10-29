@@ -1,5 +1,5 @@
 /// A library for downloading files from the internet.
-library dloader;
+library;
 
 /// The [Dloader] class.
 export 'src/dloader_base.dart';

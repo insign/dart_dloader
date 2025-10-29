@@ -30,19 +30,20 @@ class WgetAdapter implements DloaderAdapter {
   /// - segments: The number of segments to download the file with.
   /// - onProgress: A function that is called with the download progress.
   @override
-  Future<File> download(
-      {required String url,
-      required File destination,
-      String? userAgent,
-      int? segments,
-      Function(Map<String, dynamic>)? onProgress}) async {
+  Future<File> download({
+    required String url,
+    required File destination,
+    String? userAgent,
+    int? segments,
+    Function(Map<String, dynamic>)? onProgress,
+  }) async {
     executablePath = (await executable.find())!;
     final process = await Process.start(executablePath, [
       '--continue',
       '--output-document=${destination.path}',
       userAgent != null ? '--user-agent=$userAgent' : '',
       '--progress=bar:force',
-      url
+      url,
     ]);
 
     await for (var data in process.stdout.transform(utf8.decoder)) {
@@ -58,8 +59,9 @@ class WgetAdapter implements DloaderAdapter {
   /// Parses the progress string from wget.
   Map<String, String> parseProgress(String progressString) {
     final Map<String, String> progress = {};
-    final match =
-        RegExp(r'.+\s+(\d+)%[^\]]+\]\s+([\w,]+)\s+([\w,]+/s)\s+(?:eta\s([\w\s]+))?').firstMatch(progressString);
+    final match = RegExp(
+      r'.+\s+(\d+)%[^\]]+\]\s+([\w,]+)\s+([\w,]+/s)\s+(?:eta\s([\w\s]+))?',
+    ).firstMatch(progressString);
     if (match != null && match.groupCount >= 3) {
       progress["percentComplete"] = match.group(1)!;
       progress["downloaded"] = match.group(2)!;

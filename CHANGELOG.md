@@ -1,3 +1,5 @@
+## v1.2.7
+- update dart version and dependencies
 ## v1.2.6
 - Update version number
 ## v1.2.5

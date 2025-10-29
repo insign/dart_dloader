@@ -10,11 +10,12 @@ void main() {
     final destination = File('/tmp/1Mb.dat');
 
     final file = await dloader.download(
-        url: url,
-        destination: destination,
-        onProgress: (progress) {
-          print('Percent complete: ${progress['percentComplete']}%');
-        });
+      url: url,
+      destination: destination,
+      onProgress: (progress) {
+        print('Percent complete: ${progress['percentComplete']}%');
+      },
+    );
 
     expect(file.existsSync(), true);
     expect(file.lengthSync(), 1048576);
@@ -27,11 +28,12 @@ void main() {
       final destination = File('/tmp/file.dat');
 
       await dloader.download(
-          url: url,
-          destination: destination,
-          onProgress: (progress) {
-            print('Percent complete: ${progress['percentComplete']}%');
-          });
+        url: url,
+        destination: destination,
+        onProgress: (progress) {
+          print('Percent complete: ${progress['percentComplete']}%');
+        },
+      );
     }, throwsException);
   });
 }

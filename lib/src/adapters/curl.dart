@@ -30,12 +30,13 @@ class CurlAdapter implements DloaderAdapter {
   /// - segments: The number of segments to download the file with.
   /// - onProgress: A function that is called with the download progress.
   @override
-  Future<File> download(
-      {required String url,
-      required File destination,
-      String? userAgent,
-      int? segments,
-      Function(Map<String, dynamic>)? onProgress}) async {
+  Future<File> download({
+    required String url,
+    required File destination,
+    String? userAgent,
+    int? segments,
+    Function(Map<String, dynamic>)? onProgress,
+  }) async {
     executablePath = (await executable.find())!;
     final process = await Process.start(executablePath, [
       '--create-dirs',
@@ -44,7 +45,7 @@ class CurlAdapter implements DloaderAdapter {
       userAgent ?? '',
       '--output',
       destination.path,
-      url
+      url,
     ]);
 
     await for (var data in process.stdout.transform(utf8.decoder)) {
@@ -61,8 +62,8 @@ class CurlAdapter implements DloaderAdapter {
   Map<String, String> parseProgress(String progressString) {
     final Map<String, String> progress = {};
     final match = RegExp(
-            r'(\d+)\s+([\w.]+)\s+(\d+)\s+([\w.]+)\s+(\d+)\s+(\d+)\s+([\w.]+)\s+(\d+)\s+([0-9:]+)\s+([0-9:]+)\s+([0-9:]+)\s+([\w.]+)')
-        .firstMatch(progressString);
+      r'(\d+)\s+([\w.]+)\s+(\d+)\s+([\w.]+)\s+(\d+)\s+(\d+)\s+([\w.]+)\s+(\d+)\s+([0-9:]+)\s+([0-9:]+)\s+([0-9:]+)\s+([\w.]+)',
+    ).firstMatch(progressString);
     if (match != null && match.groupCount == 12) {
       progress["percentComplete"] = match.group(1)!;
       progress["totalSize"] = match.group(2)!;

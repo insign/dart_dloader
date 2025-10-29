@@ -26,13 +26,14 @@ class Dloader {
   /// [destination] The file where the downloaded file will be stored. Required.
   /// [segments] The number of segments to download the file in.
   /// [onProgress] The callback that will be called on every progress update.
-  Future<File> download(
-      {required String url,
-      required File destination,
-      String? userAgent,
-      bool disableUserAgent = false,
-      int? segments,
-      Function(Map<String, dynamic>)? onProgress}) async {
+  Future<File> download({
+    required String url,
+    required File destination,
+    String? userAgent,
+    bool disableUserAgent = false,
+    int? segments,
+    Function(Map<String, dynamic>)? onProgress,
+  }) async {
     if (!adapter.isAvailable) {
       throw Exception('Dloader adapter ${adapter.executable.cmd} not available');
     }
@@ -47,6 +48,11 @@ class Dloader {
       throw Exception('URL not provided');
     }
     return await adapter.download(
-        url: url, destination: destination, userAgent: userAgent, segments: segments, onProgress: onProgress);
+      url: url,
+      destination: destination,
+      userAgent: userAgent,
+      segments: segments,
+      onProgress: onProgress,
+    );
   }
 }

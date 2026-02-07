@@ -17,7 +17,7 @@ class WgetAdapter implements DloaderAdapter {
 
   /// The path to the wget executable.
   @override
-  late final String executablePath;
+  String? executablePath;
 
   /// Constructor that initializes the [isAvailable] flag.
   WgetAdapter() {
@@ -37,8 +37,8 @@ class WgetAdapter implements DloaderAdapter {
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
   }) async {
-    executablePath = (await executable.find())!;
-    final process = await Process.start(executablePath, [
+    executablePath ??= (await executable.find())!;
+    final process = await Process.start(executablePath!, [
       '--continue',
       '--output-document=${destination.path}',
       userAgent != null ? '--user-agent=$userAgent' : '',

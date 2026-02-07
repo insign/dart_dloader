@@ -16,7 +16,7 @@ class DioAdapter implements DloaderAdapter {
 
   /// The path to the `cp` executable, which is here just to satisfy the [DloaderAdapter] interface.
   @override
-  late final String executablePath;
+  String? executablePath;
 
   /// Constructor that initializes the [isAvailable] flag.
   DioAdapter() {

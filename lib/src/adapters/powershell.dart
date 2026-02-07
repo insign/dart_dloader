@@ -17,7 +17,7 @@ class PowerShellAdapter implements DloaderAdapter {
 
   /// The path to the powershell executable.
   @override
-  late final String executablePath;
+  String? executablePath;
 
   /// Constructor that initializes the [isAvailable] flag.
   PowerShellAdapter() {
@@ -38,8 +38,8 @@ class PowerShellAdapter implements DloaderAdapter {
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
   }) async {
-    executablePath = (await executable.find())!;
-    final process = await Process.start(executablePath, [
+    executablePath ??= (await executable.find())!;
+    final process = await Process.start(executablePath!, [
       '-Command',
       'Start-BitsTransfer -Source $url -Destination ${destination.path} ${userAgent != null ? "-UserAgent $userAgent" : ""}}',
     ]);

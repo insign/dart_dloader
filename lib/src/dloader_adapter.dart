@@ -11,7 +11,7 @@ abstract class DloaderAdapter {
   late final bool isAvailable;
 
   /// Path to the executable.
-  late final String executablePath;
+  String? executablePath;
 
   /// Downloads the file from the given [url] to the specified [destination] file.
   ///

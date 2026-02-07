@@ -18,7 +18,7 @@ class Aria2Adapter implements DloaderAdapter {
 
   /// The path to the aria2c executable.
   @override
-  late final String executablePath;
+  String? executablePath;
 
   /// Constructor that initializes the [isAvailable] flag.
   Aria2Adapter() {
@@ -39,11 +39,11 @@ class Aria2Adapter implements DloaderAdapter {
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
   }) async {
-    executablePath = (await executable.find())!;
+    executablePath ??= (await executable.find())!;
     final filename = path.basename(destination.path);
     final directory = path.dirname(destination.path);
 
-    final process = await Process.start(executablePath, [
+    final process = await Process.start(executablePath!, [
       '--max-connection-per-server=$segments',
       '--split=$segments',
       '--min-split-size=1M',

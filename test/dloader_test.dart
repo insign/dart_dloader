@@ -36,4 +36,33 @@ void main() {
       );
     }, throwsException);
   });
+
+  test('Test Dloader reuse CurlAdapter', () async {
+    final adapter = CurlAdapter();
+    if (!adapter.isAvailable) {
+      print('Skipping test: curl not available');
+      return;
+    }
+    final dloader = Dloader(adapter);
+    final url = 'https://www.google.com';
+    final destination1 = File('test_1.html');
+    final destination2 = File('test_2.html');
+
+    try {
+      await dloader.download(
+        url: url,
+        destination: destination1,
+      );
+      expect(destination1.existsSync(), true);
+
+      await dloader.download(
+        url: url,
+        destination: destination2,
+      );
+      expect(destination2.existsSync(), true);
+    } finally {
+      if (destination1.existsSync()) destination1.deleteSync();
+      if (destination2.existsSync()) destination2.deleteSync();
+    }
+  });
 }

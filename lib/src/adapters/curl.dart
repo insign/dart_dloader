@@ -17,7 +17,7 @@ class CurlAdapter implements DloaderAdapter {
 
   /// The path to the curl executable.
   @override
-  late final String executablePath;
+  String? executablePath;
 
   /// Constructor that initializes the [isAvailable] flag.
   CurlAdapter() {
@@ -37,8 +37,8 @@ class CurlAdapter implements DloaderAdapter {
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
   }) async {
-    executablePath = (await executable.find())!;
-    final process = await Process.start(executablePath, [
+    executablePath ??= (await executable.find())!;
+    final process = await Process.start(executablePath!, [
       '--create-dirs',
       '--location',
       userAgent != null ? '--user-agent' : '',

@@ -15,7 +15,7 @@ class AxelAdapter implements DloaderAdapter {
 
   /// The path to the axel executable.
   @override
-  late final String executablePath;
+  String? executablePath;
 
   /// Constructor that initializes the [isAvailable] flag.
   AxelAdapter() {
@@ -35,13 +35,13 @@ class AxelAdapter implements DloaderAdapter {
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
   }) async {
-    executablePath = (await executable.find())!;
+    executablePath ??= (await executable.find())!;
 
     if (destination.existsSync()) {
       destination.deleteSync();
     }
 
-    final process = await Process.start(executablePath, [
+    final process = await Process.start(executablePath!, [
       url,
       '--num-connections=$segments',
       '--output=${destination.path}',

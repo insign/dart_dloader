@@ -1,3 +1,6 @@
+## v1.2.8
+- fix: allow reusing adapters by lazily initializing executablePath
+- fix: use Directory.systemTemp for cross-platform test compatibility
 ## v1.2.7
 - update dart version and dependencies
 ## v1.2.6

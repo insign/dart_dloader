@@ -7,7 +7,7 @@ void main() {
   test('Test Dloader with DioAdapter and valid URL', () async {
     final dloader = Dloader(DioAdapter());
     final url = 'https://proof.ovh.net/files/1Mb.dat';
-    final destination = File('/tmp/1Mb.dat');
+    final destination = File('${Directory.systemTemp.path}/1Mb.dat');
 
     final file = await dloader.download(
       url: url,
@@ -25,7 +25,7 @@ void main() {
     expect(() async {
       final dloader = Dloader(DioAdapter());
       final url = 'https://invalid.supersite/file.dat';
-      final destination = File('/tmp/file.dat');
+      final destination = File('${Directory.systemTemp.path}/file.dat');
 
       await dloader.download(
         url: url,
@@ -64,5 +64,30 @@ void main() {
       if (destination1.existsSync()) destination1.deleteSync();
       if (destination2.existsSync()) destination2.deleteSync();
     }
+  });
+
+  test('Test Dloader with DioAdapter reports speed and ETA', () async {
+    final dloader = Dloader(DioAdapter());
+    final url = 'https://proof.ovh.net/files/1Mb.dat';
+    final destination = File('${Directory.systemTemp.path}/1Mb.dat');
+
+    bool hasSpeed = false;
+    bool hasEta = false;
+
+    try {
+      await dloader.download(
+        url: url,
+        destination: destination,
+        onProgress: (progress) {
+          if (progress.containsKey('speed')) hasSpeed = true;
+          if (progress.containsKey('eta')) hasEta = true;
+        },
+      );
+    } finally {
+      if (destination.existsSync()) destination.deleteSync();
+    }
+
+    expect(hasSpeed, true);
+    expect(hasEta, true);
   });
 }

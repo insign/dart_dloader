@@ -40,6 +40,9 @@ class DioAdapter implements DloaderAdapter {
     if (userAgent != null) {
       dio.options.headers["User-Agent"] = userAgent;
     }
+
+    final startTime = DateTime.now();
+
     try {
       await dio.download(
         url,
@@ -50,6 +53,21 @@ class DioAdapter implements DloaderAdapter {
             progress['percentComplete'] = (received / total * 100).toStringAsFixed(0);
             progress['downloaded'] = received.toString();
             progress['totalSize'] = total.toString();
+
+            final elapsed = DateTime.now().difference(startTime);
+            if (elapsed.inMilliseconds > 0) {
+              final speed = received / (elapsed.inMilliseconds / 1000);
+              progress['speed'] = '${(speed / 1024 / 1024).toStringAsFixed(2)} MB/s';
+
+              final remaining = total - received;
+              final etaSeconds = (remaining / speed).ceil();
+              final eta = Duration(seconds: etaSeconds);
+              progress['eta'] = _formatDuration(eta);
+            } else {
+              progress['speed'] = '0.00 MB/s';
+              progress['eta'] = '00:00:00';
+            }
+
             onProgress?.call(progress);
           }
         },
@@ -59,5 +77,12 @@ class DioAdapter implements DloaderAdapter {
     }
 
     return destination;
+  }
+
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    final twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return '${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds';
   }
 }

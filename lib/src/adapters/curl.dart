@@ -48,10 +48,12 @@ class CurlAdapter implements DloaderAdapter {
       url,
     ]);
 
-    await for (var data in process.stdout.transform(utf8.decoder)) {
-      final lines = data.split('\n');
+    await for (var data in process.stderr.transform(utf8.decoder)) {
+      final lines = data.split(RegExp(r'[\n\r]'));
       for (final line in lines) {
-        onProgress?.call(parseProgress(line));
+        if (line.isNotEmpty) {
+          onProgress?.call(parseProgress(line));
+        }
       }
     }
 
@@ -62,7 +64,7 @@ class CurlAdapter implements DloaderAdapter {
   Map<String, String> parseProgress(String progressString) {
     final Map<String, String> progress = {};
     final match = RegExp(
-      r'(\d+)\s+([\w.]+)\s+(\d+)\s+([\w.]+)\s+(\d+)\s+(\d+)\s+([\w.]+)\s+(\d+)\s+([0-9:]+)\s+([0-9:]+)\s+([0-9:]+)\s+([\w.]+)',
+      r'(\d+)\s+([\w.]+)\s+(\d+)\s+([\w.]+)\s+(\d+)\s+(\d+)\s+([\w.]+)\s+(\d+)\s+([0-9:-]+)\s+([0-9:-]+)\s+([0-9:-]+)\s+([\w.]+)',
     ).firstMatch(progressString);
     if (match != null && match.groupCount == 12) {
       progress["percentComplete"] = match.group(1)!;

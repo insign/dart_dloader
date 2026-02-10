@@ -90,4 +90,29 @@ void main() {
       if (destination.existsSync()) destination.deleteSync();
     }
   });
+
+  test('Test Dloader.auto()', () async {
+    final dloader = Dloader.auto();
+    final url = 'https://proof.ovh.net/files/1Mb.dat';
+    final destination = File('${Directory.systemTemp.path}/auto_1Mb.dat');
+
+    print('Using adapter: ${dloader.adapter.runtimeType}');
+
+    try {
+      final file = await dloader.download(
+        url: url,
+        destination: destination,
+        onProgress: (progress) {
+          // print('Percent complete: ${progress['percentComplete']}%');
+        },
+      );
+
+      expect(file.existsSync(), true);
+      expect(file.lengthSync(), 1048576);
+    } finally {
+      if (destination.existsSync()) {
+        destination.deleteSync();
+      }
+    }
+  });
 }

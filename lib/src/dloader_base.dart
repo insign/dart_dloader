@@ -35,7 +35,9 @@ class Dloader {
     Function(Map<String, dynamic>)? onProgress,
   }) async {
     if (!adapter.isAvailable) {
-      throw Exception('Dloader adapter ${adapter.executable.cmd} not available');
+      throw Exception(
+        'Dloader adapter ${adapter.executable.cmd} not available',
+      );
     }
 
     if (!disableUserAgent) {

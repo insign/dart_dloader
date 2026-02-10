@@ -49,20 +49,45 @@ void main() {
     final destination2 = File('test_2.html');
 
     try {
-      await dloader.download(
-        url: url,
-        destination: destination1,
-      );
+      await dloader.download(url: url, destination: destination1);
       expect(destination1.existsSync(), true);
 
-      await dloader.download(
-        url: url,
-        destination: destination2,
-      );
+      await dloader.download(url: url, destination: destination2);
       expect(destination2.existsSync(), true);
     } finally {
       if (destination1.existsSync()) destination1.deleteSync();
       if (destination2.existsSync()) destination2.deleteSync();
+    }
+  });
+
+  test('Test Dloader with CurlAdapter and valid URL with progress', () async {
+    final adapter = CurlAdapter();
+    if (!adapter.isAvailable) {
+      print('Skipping test: curl not available');
+      return;
+    }
+    final dloader = Dloader(adapter);
+    final url = 'https://proof.ovh.net/files/1Mb.dat';
+    final destination = File('${Directory.systemTemp.path}/curl_1Mb.dat');
+
+    try {
+      bool progressCalled = false;
+      final file = await dloader.download(
+        url: url,
+        destination: destination,
+        onProgress: (progress) {
+          if (progress.containsKey('percentComplete')) {
+            progressCalled = true;
+            print('Curl Percent complete: ${progress['percentComplete']}%');
+          }
+        },
+      );
+
+      expect(file.existsSync(), true);
+      expect(file.lengthSync(), 1048576);
+      expect(progressCalled, true);
+    } finally {
+      if (destination.existsSync()) destination.deleteSync();
     }
   });
 }

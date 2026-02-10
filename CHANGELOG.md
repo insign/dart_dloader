@@ -1,3 +1,5 @@
+## v1.2.9
+- fix: read curl progress from stderr instead of stdout
 ## v1.2.8
 - fix: allow reusing adapters by lazily initializing executablePath
 - fix: use Directory.systemTemp for cross-platform test compatibility

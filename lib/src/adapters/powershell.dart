@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dloader/dloader.dart';
+import '../dloader_adapter.dart';
 import 'package:executable/executable.dart';
 
 /// This class implements [DloaderAdapter] for downloading using powershell.

@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:dloader/dloader.dart';
 import 'package:executable/executable.dart';
+
+import '../dloader_adapter.dart';
 
 /// This class implements [DloaderAdapter] for downloading using axel.
 class AxelAdapter implements DloaderAdapter {

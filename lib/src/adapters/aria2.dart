@@ -2,9 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dloader/src/dloader_adapter.dart';
 import 'package:executable/executable.dart';
 import 'package:path/path.dart' as path;
+
+import '../dloader_adapter.dart';
 
 /// This class implements the [DloaderAdapter] interface and is used to download files using the `aria2c` executable.
 class Aria2Adapter implements DloaderAdapter {

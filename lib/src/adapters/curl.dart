@@ -2,8 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dloader/src/dloader_adapter.dart';
 import 'package:executable/executable.dart';
+
+import '../dloader_adapter.dart';
 
 /// This class implements [DloaderAdapter] for downloading using curl.
 class CurlAdapter implements DloaderAdapter {

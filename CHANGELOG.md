@@ -1,3 +1,6 @@
+## v1.3.0
+- feat: Add Dloader.auto() factory for automatic adapter selection
+- refactor: Use relative imports in all adapters to avoid circular dependencies
 ## v1.2.9
 - fix: read curl progress from stderr instead of stdout
 ## v1.2.8

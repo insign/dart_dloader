@@ -2,6 +2,13 @@ import 'dart:io';
 
 import 'package:dloader/src/dloader_adapter.dart';
 
+import 'adapters/aria2.dart';
+import 'adapters/axel.dart';
+import 'adapters/curl.dart';
+import 'adapters/dio.dart';
+import 'adapters/powershell.dart';
+import 'adapters/wget.dart';
+
 /// A class that allows downloading a file from a URL, with an adapter implementation
 class Dloader {
   /// The user agent to use when downloading the file
@@ -16,6 +23,26 @@ class Dloader {
 
   /// Constructor for Dloader class
   Dloader(this.adapter);
+
+  /// Automatically selects the best available adapter
+  factory Dloader.auto() {
+    final adapters = [
+      Aria2Adapter(),
+      AxelAdapter(),
+      WgetAdapter(),
+      CurlAdapter(),
+      PowerShellAdapter(),
+      DioAdapter(),
+    ];
+
+    for (final adapter in adapters) {
+      if (adapter.isAvailable) {
+        return Dloader(adapter);
+      }
+    }
+
+    return Dloader(DioAdapter());
+  }
 
   /// Downloads a file from the given URL to the specified destination, using the adapter implementation
   ///

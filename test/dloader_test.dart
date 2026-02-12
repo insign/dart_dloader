@@ -115,4 +115,30 @@ void main() {
       }
     }
   });
+
+  test('Test Dloader with default onProgress', () async {
+    final dloader = Dloader(DioAdapter());
+    final url = 'https://proof.ovh.net/files/1Mb.dat';
+    final destination = File('${Directory.systemTemp.path}/default_onProgress_1Mb.dat');
+
+    bool progressCalled = false;
+    dloader.onProgress = (progress) {
+      if (progress.containsKey('percentComplete')) {
+        progressCalled = true;
+      }
+    };
+
+    try {
+      final file = await dloader.download(
+        url: url,
+        destination: destination,
+      );
+
+      expect(file.existsSync(), true);
+      expect(file.lengthSync(), 1048576);
+      expect(progressCalled, true);
+    } finally {
+      if (destination.existsSync()) destination.deleteSync();
+    }
+  });
 }

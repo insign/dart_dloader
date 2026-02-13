@@ -15,7 +15,7 @@ class Dloader {
       'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36';
 
   /// The callback that will be called on every progress update
-  Function(double, int)? onProgress;
+  Function(Map<String, dynamic>)? onProgress;
 
   /// The adapter implementation that will perform the download
   DloaderAdapter adapter;
@@ -87,7 +87,7 @@ class Dloader {
       destination: destination,
       userAgent: userAgent,
       segments: segments,
-      onProgress: onProgress,
+      onProgress: onProgress ?? this.onProgress,
     );
   }
 }

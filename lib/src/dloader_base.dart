@@ -64,6 +64,7 @@ class Dloader {
     required File destination,
     String? userAgent,
     bool disableUserAgent = false,
+    Map<String, String>? headers,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
   }) async {
@@ -86,6 +87,7 @@ class Dloader {
       url: url,
       destination: destination,
       userAgent: userAgent,
+      headers: headers,
       segments: segments,
       onProgress: onProgress,
     );

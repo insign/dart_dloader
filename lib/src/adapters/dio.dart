@@ -34,12 +34,16 @@ class DioAdapter implements DloaderAdapter {
     required String url,
     required File destination,
     String? userAgent,
+    Map<String, String>? headers,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
   }) async {
     final dio = Dio();
     if (userAgent != null) {
       dio.options.headers["User-Agent"] = userAgent;
+    }
+    if (headers != null) {
+      dio.options.headers.addAll(headers);
     }
     try {
       await dio.download(

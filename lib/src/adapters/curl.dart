@@ -35,19 +35,26 @@ class CurlAdapter implements DloaderAdapter {
     required String url,
     required File destination,
     String? userAgent,
+    Map<String, String>? headers,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
   }) async {
     executablePath ??= (await executable.find())!;
-    final process = await Process.start(executablePath!, [
+    final args = [
       '--create-dirs',
       '--location',
-      userAgent != null ? '--user-agent' : '',
-      userAgent ?? '',
+      if (userAgent != null) ...['--user-agent', userAgent],
+      if (headers != null)
+        for (final entry in headers.entries) ...[
+          '-H',
+          '${entry.key}: ${entry.value}'
+        ],
       '--output',
       destination.path,
       url,
-    ]);
+    ];
+
+    final process = await Process.start(executablePath!, args);
 
     await for (var data in process.stderr.transform(utf8.decoder)) {
       final lines = data.split(RegExp(r'[\n\r]'));

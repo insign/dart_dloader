@@ -26,6 +26,7 @@ abstract class DloaderAdapter {
     required String url,
     required File destination,
     String? userAgent,
+    Map<String, String>? headers,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
   });

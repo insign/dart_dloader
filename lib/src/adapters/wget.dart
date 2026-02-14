@@ -35,17 +35,23 @@ class WgetAdapter implements DloaderAdapter {
     required String url,
     required File destination,
     String? userAgent,
+    Map<String, String>? headers,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
   }) async {
     executablePath ??= (await executable.find())!;
-    final process = await Process.start(executablePath!, [
+    final args = [
       '--continue',
       '--output-document=${destination.path}',
-      userAgent != null ? '--user-agent=$userAgent' : '',
+      if (userAgent != null) '--user-agent=$userAgent',
       '--progress=bar:force',
+      if (headers != null)
+        for (final entry in headers.entries)
+          '--header=${entry.key}: ${entry.value}',
       url,
-    ]);
+    ];
+
+    final process = await Process.start(executablePath!, args);
 
     await for (var data in process.stdout.transform(utf8.decoder)) {
       final lines = data.split('\n');

@@ -33,6 +33,7 @@ class AxelAdapter implements DloaderAdapter {
     required String url,
     required File destination,
     String? userAgent,
+    Map<String, String>? headers,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
   }) async {
@@ -42,13 +43,20 @@ class AxelAdapter implements DloaderAdapter {
       destination.deleteSync();
     }
 
-    final process = await Process.start(executablePath!, [
+    final args = [
       url,
       '--num-connections=$segments',
       '--output=${destination.path}',
       '--percentage',
-      userAgent != null ? '--user-agent=$userAgent' : '',
-    ]);
+      if (userAgent != null) '--user-agent=$userAgent',
+      if (headers != null)
+        for (final entry in headers.entries) ...[
+          '-H',
+          '${entry.key}: ${entry.value}'
+        ],
+    ];
+
+    final process = await Process.start(executablePath!, args);
 
     await for (var data in process.stdout.transform(utf8.decoder)) {
       final lines = data.split('\n');

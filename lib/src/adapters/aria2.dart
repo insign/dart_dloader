@@ -37,6 +37,7 @@ class Aria2Adapter implements DloaderAdapter {
     required String url,
     required File destination,
     String? userAgent,
+    Map<String, String>? headers,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
   }) async {
@@ -44,14 +45,17 @@ class Aria2Adapter implements DloaderAdapter {
     final filename = path.basename(destination.path);
     final directory = path.dirname(destination.path);
 
-    final process = await Process.start(executablePath!, [
+    final args = [
       '--max-connection-per-server=$segments',
       '--split=$segments',
       '--min-split-size=1M',
       '--dir=$directory',
       '--out=$filename',
       '--file-allocation=falloc',
-      userAgent != null ? '--user-agent=$userAgent' : '',
+      if (userAgent != null) '--user-agent=$userAgent',
+      if (headers != null)
+        for (final entry in headers.entries)
+          '--header=${entry.key}: ${entry.value}',
       '--continue=true',
       '--auto-file-renaming=false',
       '--allow-overwrite=true',
@@ -61,7 +65,9 @@ class Aria2Adapter implements DloaderAdapter {
       // '--log-level=info',
       // '--log=-',
       url,
-    ]);
+    ];
+
+    final process = await Process.start(executablePath!, args);
 
     await for (var data in process.stdout.transform(utf8.decoder)) {
       final lines = data.split('\n');

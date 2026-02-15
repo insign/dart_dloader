@@ -17,6 +17,7 @@ abstract class DloaderAdapter {
   ///
   /// [url] is the URL of the file to download.
   /// [destination] is the destination file.
+  /// [headers] (optional) is a map of custom HTTP headers to include in the request.
   /// [userAgent] (optional) is the user agent to use for the download.
   /// [segments] (optional) is the number of segments to download the file in.
   /// [onProgress] (optional) is a function that is called with the download progress.
@@ -25,6 +26,7 @@ abstract class DloaderAdapter {
   Future<File> download({
     required String url,
     required File destination,
+    Map<String, String>? headers,
     String? userAgent,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,

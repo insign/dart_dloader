@@ -27,24 +27,29 @@ class DioAdapter implements DloaderAdapter {
   /// Downloads a file with [Dio].
   /// - url: The URL of the file to download.
   /// - destination: The destination file.
+  /// - headers: Map of custom HTTP headers to include in the request.
   /// - segments: The number of segments to download the file with.
   /// - onProgress: A function that is called with the download progress.
   @override
   Future<File> download({
     required String url,
     required File destination,
+    Map<String, String>? headers,
     String? userAgent,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
   }) async {
     final dio = Dio();
+    final requestHeaders = Map<String, dynamic>.from(headers ?? {});
     if (userAgent != null) {
-      dio.options.headers["User-Agent"] = userAgent;
+      requestHeaders["User-Agent"] = userAgent;
     }
+
     try {
       await dio.download(
         url,
         destination.path,
+        options: Options(headers: requestHeaders),
         onReceiveProgress: (received, total) {
           final Map<String, String> progress = {};
           if (total != -1) {

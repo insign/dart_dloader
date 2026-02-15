@@ -28,24 +28,35 @@ class WgetAdapter implements DloaderAdapter {
   /// Downloads a file with Wget.
   /// - url: The URL of the file to download.
   /// - destination: The destination file.
+  /// - headers: Map of custom HTTP headers to include in the request.
   /// - segments: The number of segments to download the file with.
   /// - onProgress: A function that is called with the download progress.
   @override
   Future<File> download({
     required String url,
     required File destination,
+    Map<String, String>? headers,
     String? userAgent,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
   }) async {
     executablePath ??= (await executable.find())!;
-    final process = await Process.start(executablePath!, [
+    final args = [
       '--continue',
       '--output-document=${destination.path}',
-      userAgent != null ? '--user-agent=$userAgent' : '',
+      if (userAgent != null) '--user-agent=$userAgent',
       '--progress=bar:force',
-      url,
-    ]);
+    ];
+
+    if (headers != null) {
+      headers.forEach((key, value) {
+        args.add('--header=$key: $value');
+      });
+    }
+
+    args.add(url);
+
+    final process = await Process.start(executablePath!, args);
 
     await for (var data in process.stdout.transform(utf8.decoder)) {
       final lines = data.split('\n');

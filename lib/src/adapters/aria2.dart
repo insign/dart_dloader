@@ -30,12 +30,14 @@ class Aria2Adapter implements DloaderAdapter {
   ///
   /// - url: The URL of the file to download.
   /// - [destination]: The destination file.
+  /// - headers: Map of custom HTTP headers to include in the request.
   /// - segments: The number of segments to download the file with.
   /// - onProgress: A function that is called with the download progress.
   @override
   Future<File> download({
     required String url,
     required File destination,
+    Map<String, String>? headers,
     String? userAgent,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
@@ -44,14 +46,14 @@ class Aria2Adapter implements DloaderAdapter {
     final filename = path.basename(destination.path);
     final directory = path.dirname(destination.path);
 
-    final process = await Process.start(executablePath!, [
+    final args = [
       '--max-connection-per-server=$segments',
       '--split=$segments',
       '--min-split-size=1M',
       '--dir=$directory',
       '--out=$filename',
       '--file-allocation=falloc',
-      userAgent != null ? '--user-agent=$userAgent' : '',
+      if (userAgent != null) '--user-agent=$userAgent',
       '--continue=true',
       '--auto-file-renaming=false',
       '--allow-overwrite=true',
@@ -60,8 +62,17 @@ class Aria2Adapter implements DloaderAdapter {
       '--summary-interval=1',
       // '--log-level=info',
       // '--log=-',
-      url,
-    ]);
+    ];
+
+    if (headers != null) {
+      headers.forEach((key, value) {
+        args.add('--header=$key: $value');
+      });
+    }
+
+    args.add(url);
+
+    final process = await Process.start(executablePath!, args);
 
     await for (var data in process.stdout.transform(utf8.decoder)) {
       final lines = data.split('\n');

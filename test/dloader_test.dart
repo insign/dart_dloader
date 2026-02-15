@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:test/test.dart';
 import 'package:dloader/dloader.dart';
@@ -109,6 +110,57 @@ void main() {
 
       expect(file.existsSync(), true);
       expect(file.lengthSync(), 1048576);
+    } finally {
+      if (destination.existsSync()) {
+        destination.deleteSync();
+      }
+    }
+  });
+
+  test('Test Dloader with custom headers', () async {
+    final dloader = Dloader(DioAdapter());
+    final url = 'https://httpbin.org/headers';
+    final destination = File('${Directory.systemTemp.path}/headers.json');
+
+    try {
+      final file = await dloader.download(
+        url: url,
+        destination: destination,
+        headers: {'X-Custom-Header': 'MyValue'},
+      );
+
+      expect(file.existsSync(), true);
+      final content = await file.readAsString();
+      final json = jsonDecode(content);
+      expect(json['headers']['X-Custom-Header'], 'MyValue');
+    } finally {
+      if (destination.existsSync()) {
+        destination.deleteSync();
+      }
+    }
+  });
+
+  test('Test Dloader with default onProgress', () async {
+    final dloader = Dloader(DioAdapter());
+    final url = 'https://proof.ovh.net/files/1Mb.dat';
+    final destination = File('${Directory.systemTemp.path}/default_progress.dat');
+    bool progressCalled = false;
+
+    dloader.onProgress = (progress) {
+      if (progress.containsKey('percentComplete')) {
+        progressCalled = true;
+      }
+    };
+
+    try {
+      final file = await dloader.download(
+        url: url,
+        destination: destination,
+      );
+
+      expect(file.existsSync(), true);
+      expect(file.lengthSync(), 1048576);
+      expect(progressCalled, true);
     } finally {
       if (destination.existsSync()) {
         destination.deleteSync();

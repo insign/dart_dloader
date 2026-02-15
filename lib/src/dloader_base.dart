@@ -15,7 +15,7 @@ class Dloader {
       'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36';
 
   /// The callback that will be called on every progress update
-  Function(double, int)? onProgress;
+  Function(Map<String, dynamic>)? onProgress;
 
   /// The adapter implementation that will perform the download
   DloaderAdapter adapter;
@@ -57,11 +57,13 @@ class Dloader {
   ///
   /// [url] URL of the file to download. Required.
   /// [destination] The file where the downloaded file will be stored. Required.
+  /// [headers] Map of custom HTTP headers to include in the request.
   /// [segments] The number of segments to download the file in.
   /// [onProgress] The callback that will be called on every progress update.
   Future<File> download({
     required String url,
     required File destination,
+    Map<String, String>? headers,
     String? userAgent,
     bool disableUserAgent = false,
     int? segments,
@@ -85,9 +87,10 @@ class Dloader {
     return await adapter.download(
       url: url,
       destination: destination,
+      headers: headers,
       userAgent: userAgent,
       segments: segments,
-      onProgress: onProgress,
+      onProgress: onProgress ?? this.onProgress,
     );
   }
 }

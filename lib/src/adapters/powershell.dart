@@ -28,6 +28,7 @@ class PowerShellAdapter implements DloaderAdapter {
   /// Downloads a file with PowerShell.
   /// - url: The URL of the file to download.
   /// - destination: The destination file.
+  /// - headers: Map of custom HTTP headers to include in the request.
   /// - segments: The number of segments to download the file with.
   /// - onProgress: A function that is called with the download progress.
 
@@ -35,10 +36,16 @@ class PowerShellAdapter implements DloaderAdapter {
   Future<File> download({
     required String url,
     required File destination,
+    Map<String, String>? headers,
     String? userAgent,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
   }) async {
+    if (headers != null && headers.isNotEmpty) {
+      print(
+        'Warning: Custom headers are not supported by PowerShellAdapter (Start-BitsTransfer). They will be ignored.',
+      );
+    }
     executablePath ??= (await executable.find())!;
     final process = await Process.start(executablePath!, [
       '-Command',

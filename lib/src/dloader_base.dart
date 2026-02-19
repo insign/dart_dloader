@@ -60,6 +60,7 @@ class Dloader {
   /// [headers] Map of custom HTTP headers to include in the request.
   /// [segments] The number of segments to download the file in.
   /// [onProgress] The callback that will be called on every progress update.
+  /// [retries] The number of times to retry the download if it fails. Defaults to 0.
   Future<File> download({
     required String url,
     required File destination,
@@ -68,6 +69,7 @@ class Dloader {
     bool disableUserAgent = false,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
+    int retries = 0,
   }) async {
     if (!adapter.isAvailable) {
       throw Exception(
@@ -84,13 +86,24 @@ class Dloader {
     if (url.isEmpty) {
       throw Exception('URL not provided');
     }
-    return await adapter.download(
-      url: url,
-      destination: destination,
-      headers: headers,
-      userAgent: userAgent,
-      segments: segments,
-      onProgress: onProgress ?? this.onProgress,
-    );
+
+    int attempts = 0;
+    while (true) {
+      try {
+        attempts++;
+        return await adapter.download(
+          url: url,
+          destination: destination,
+          headers: headers,
+          userAgent: userAgent,
+          segments: segments,
+          onProgress: onProgress ?? this.onProgress,
+        );
+      } catch (e) {
+        if (attempts > retries) {
+          rethrow;
+        }
+      }
+    }
   }
 }

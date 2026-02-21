@@ -17,6 +17,7 @@ class MockAdapter implements DloaderAdapter {
   Future<File> download({
     required String url,
     required File destination,
+    Map<String, String>? headers,
     String? userAgent,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,

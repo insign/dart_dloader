@@ -27,6 +27,7 @@ class FailingAdapter implements DloaderAdapter {
     String? userAgent,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
+    Duration? timeout,
   }) async {
     attempts++;
     if (attempts <= failsCount) {

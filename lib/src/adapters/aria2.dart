@@ -41,6 +41,7 @@ class Aria2Adapter implements DloaderAdapter {
     String? userAgent,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
+    Duration? timeout,
   }) async {
     executablePath ??= (await executable.find())!;
     final filename = path.basename(destination.path);
@@ -54,6 +55,8 @@ class Aria2Adapter implements DloaderAdapter {
       '--out=$filename',
       '--file-allocation=falloc',
       if (userAgent != null) '--user-agent=$userAgent',
+      if (timeout != null)
+        '--timeout=${(timeout.inMilliseconds / 1000).ceil()}',
       '--continue=true',
       '--auto-file-renaming=false',
       '--allow-overwrite=true',

@@ -21,10 +21,15 @@ class MockAdapter implements DloaderAdapter {
     String? userAgent,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
+    Duration? timeout,
   }) async {
     // Simulate progress
     if (onProgress != null) {
-      onProgress({'percentComplete': '50', 'downloaded': '100', 'totalSize': '200'});
+      onProgress({
+        'percentComplete': '50',
+        'downloaded': '100',
+        'totalSize': '200',
+      });
     }
     return destination;
   }
@@ -37,8 +42,8 @@ void main() {
     bool instanceProgressCalled = false;
 
     dloader.onProgress = (Map<String, dynamic> progress) {
-       instanceProgressCalled = true;
-       expect(progress['percentComplete'], '50');
+      instanceProgressCalled = true;
+      expect(progress['percentComplete'], '50');
     };
 
     await dloader.download(
@@ -46,7 +51,11 @@ void main() {
       destination: File('test_file'),
     );
 
-    expect(instanceProgressCalled, isTrue, reason: 'Instance onProgress should be called');
+    expect(
+      instanceProgressCalled,
+      isTrue,
+      reason: 'Instance onProgress should be called',
+    );
   });
 
   test('Dloader uses passed onProgress over instance onProgress', () async {
@@ -56,7 +65,7 @@ void main() {
     bool argProgressCalled = false;
 
     dloader.onProgress = (Map<String, dynamic> progress) {
-       instanceProgressCalled = true;
+      instanceProgressCalled = true;
     };
 
     await dloader.download(
@@ -64,10 +73,18 @@ void main() {
       destination: File('test_file'),
       onProgress: (progress) {
         argProgressCalled = true;
-      }
+      },
     );
 
-    expect(argProgressCalled, isTrue, reason: 'Argument onProgress should be called');
-    expect(instanceProgressCalled, isFalse, reason: 'Instance onProgress should NOT be called');
+    expect(
+      argProgressCalled,
+      isTrue,
+      reason: 'Argument onProgress should be called',
+    );
+    expect(
+      instanceProgressCalled,
+      isFalse,
+      reason: 'Instance onProgress should NOT be called',
+    );
   });
 }

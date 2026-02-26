@@ -39,12 +39,17 @@ class CurlAdapter implements DloaderAdapter {
     String? userAgent,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
+    Duration? timeout,
   }) async {
     executablePath ??= (await executable.find())!;
     final args = [
       '--create-dirs',
       '--location',
       if (userAgent != null) ...['--user-agent', userAgent],
+      if (timeout != null) ...[
+        '--max-time',
+        (timeout.inMilliseconds / 1000).toString(),
+      ],
       '--output',
       destination.path,
     ];

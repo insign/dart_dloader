@@ -38,8 +38,13 @@ class DioAdapter implements DloaderAdapter {
     String? userAgent,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
+    Duration? timeout,
   }) async {
     final dio = Dio();
+    if (timeout != null) {
+      dio.options.connectTimeout = timeout;
+      dio.options.receiveTimeout = timeout;
+    }
     final requestHeaders = Map<String, dynamic>.from(headers ?? {});
     if (userAgent != null) {
       requestHeaders["User-Agent"] = userAgent;

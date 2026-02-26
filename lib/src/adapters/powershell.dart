@@ -40,7 +40,13 @@ class PowerShellAdapter implements DloaderAdapter {
     String? userAgent,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
+    Duration? timeout,
   }) async {
+    if (timeout != null) {
+      print(
+        'Warning: Timeout is not supported by PowerShellAdapter (Start-BitsTransfer). It will be ignored.',
+      );
+    }
     if (headers != null && headers.isNotEmpty) {
       print(
         'Warning: Custom headers are not supported by PowerShellAdapter (Start-BitsTransfer). They will be ignored.',

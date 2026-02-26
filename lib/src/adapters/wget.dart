@@ -39,12 +39,15 @@ class WgetAdapter implements DloaderAdapter {
     String? userAgent,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
+    Duration? timeout,
   }) async {
     executablePath ??= (await executable.find())!;
     final args = [
       '--continue',
       '--output-document=${destination.path}',
       if (userAgent != null) '--user-agent=$userAgent',
+      if (timeout != null)
+        '--timeout=${(timeout.inMilliseconds / 1000).ceil()}',
       '--progress=bar:force',
     ];
 

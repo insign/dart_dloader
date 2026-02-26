@@ -37,6 +37,7 @@ class AxelAdapter implements DloaderAdapter {
     String? userAgent,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
+    Duration? timeout,
   }) async {
     executablePath ??= (await executable.find())!;
 
@@ -50,6 +51,8 @@ class AxelAdapter implements DloaderAdapter {
       '--output=${destination.path}',
       '--percentage',
       if (userAgent != null) '--user-agent=$userAgent',
+      if (timeout != null)
+        '--timeout=${(timeout.inMilliseconds / 1000).ceil()}',
     ];
 
     if (headers != null) {

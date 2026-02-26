@@ -61,6 +61,7 @@ class Dloader {
   /// [segments] The number of segments to download the file in.
   /// [onProgress] The callback that will be called on every progress update.
   /// [retries] The number of times to retry the download if it fails. Defaults to 0.
+  /// [timeout] The maximum duration to wait for the download to complete.
   Future<File> download({
     required String url,
     required File destination,
@@ -70,6 +71,7 @@ class Dloader {
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
     int retries = 0,
+    Duration? timeout,
   }) async {
     if (!adapter.isAvailable) {
       throw Exception(
@@ -98,6 +100,7 @@ class Dloader {
           userAgent: userAgent,
           segments: segments,
           onProgress: onProgress ?? this.onProgress,
+          timeout: timeout,
         );
       } catch (e) {
         if (attempts > retries) {

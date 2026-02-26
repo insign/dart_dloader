@@ -30,5 +30,6 @@ abstract class DloaderAdapter {
     String? userAgent,
     int? segments,
     Function(Map<String, dynamic>)? onProgress,
+    Duration? timeout,
   });
 }

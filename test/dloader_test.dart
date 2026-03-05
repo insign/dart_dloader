@@ -92,6 +92,37 @@ void main() {
     }
   });
 
+  test('Test Dloader with WgetAdapter and valid URL with progress', () async {
+    final adapter = WgetAdapter();
+    if (!adapter.isAvailable) {
+      print('Skipping test: wget not available');
+      return;
+    }
+    final dloader = Dloader(adapter);
+    final url = 'https://proof.ovh.net/files/1Mb.dat';
+    final destination = File('${Directory.systemTemp.path}/wget_1Mb.dat');
+
+    try {
+      bool progressCalled = false;
+      final file = await dloader.download(
+        url: url,
+        destination: destination,
+        onProgress: (progress) {
+          if (progress.containsKey('percentComplete')) {
+            progressCalled = true;
+            print('Wget Percent complete: ${progress['percentComplete']}%');
+          }
+        },
+      );
+
+      expect(file.existsSync(), true);
+      expect(file.lengthSync(), 1048576);
+      expect(progressCalled, true);
+    } finally {
+      if (destination.existsSync()) destination.deleteSync();
+    }
+  });
+
   test('Test Dloader.auto()', () async {
     final dloader = Dloader.auto();
     final url = 'https://proof.ovh.net/files/1Mb.dat';

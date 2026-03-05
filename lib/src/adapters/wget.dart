@@ -58,7 +58,7 @@ class WgetAdapter implements DloaderAdapter {
 
     final process = await Process.start(executablePath!, args);
 
-    await for (var data in process.stdout.transform(utf8.decoder)) {
+    await for (var data in process.stderr.transform(utf8.decoder)) {
       final lines = data.split('\n');
       for (final line in lines) {
         onProgress?.call(parseProgress(line));
@@ -72,7 +72,7 @@ class WgetAdapter implements DloaderAdapter {
   Map<String, String> parseProgress(String progressString) {
     final Map<String, String> progress = {};
     final match = RegExp(
-      r'.+\s+(\d+)%[^\]]+\]\s+([\w,]+)\s+([\w,]+/s)\s+(?:eta\s([\w\s]+))?',
+      r'\s+(\d+)%\[.+\]\s+([\d.,]+[KMBG]*)\s+(--.-[KMBG]*/s|[\d.,]+[KMBG]*/s)(?:\s+(?:eta|in)\s+([\w\s.]+))?',
     ).firstMatch(progressString);
     if (match != null && match.groupCount >= 3) {
       progress["percentComplete"] = match.group(1)!;

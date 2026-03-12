@@ -81,6 +81,11 @@ class Aria2Adapter implements DloaderAdapter {
       }
     }
 
+    final exitCode = await process.exitCode;
+    if (exitCode != 0) {
+      throw Exception('aria2c exited with code $exitCode');
+    }
+
     return destination;
   }
 

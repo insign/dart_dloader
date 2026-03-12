@@ -44,6 +44,7 @@ class CurlAdapter implements DloaderAdapter {
     final args = [
       '--create-dirs',
       '--location',
+      '--fail',
       if (userAgent != null) ...['--user-agent', userAgent],
       '--output',
       destination.path,
@@ -67,6 +68,11 @@ class CurlAdapter implements DloaderAdapter {
           onProgress?.call(parseProgress(line));
         }
       }
+    }
+
+    final exitCode = await process.exitCode;
+    if (exitCode != 0) {
+      throw Exception('curl exited with code $exitCode');
     }
 
     return destination;

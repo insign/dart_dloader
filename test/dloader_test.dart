@@ -61,6 +61,44 @@ void main() {
     }
   });
 
+  test('Test Dloader with CurlAdapter and invalid URL', () async {
+    final adapter = CurlAdapter();
+    if (!adapter.isAvailable) {
+      print('Skipping test: curl not available');
+      return;
+    }
+
+    expect(() async {
+      final dloader = Dloader(adapter);
+      final url = 'https://invalid.supersite/file.dat';
+      final destination = File('${Directory.systemTemp.path}/curl_invalid.dat');
+
+      await dloader.download(
+        url: url,
+        destination: destination,
+      );
+    }, throwsException);
+  });
+
+  test('Test Dloader with WgetAdapter and invalid URL', () async {
+    final adapter = WgetAdapter();
+    if (!adapter.isAvailable) {
+      print('Skipping test: wget not available');
+      return;
+    }
+
+    expect(() async {
+      final dloader = Dloader(adapter);
+      final url = 'https://invalid.supersite/file.dat';
+      final destination = File('${Directory.systemTemp.path}/wget_invalid.dat');
+
+      await dloader.download(
+        url: url,
+        destination: destination,
+      );
+    }, throwsException);
+  });
+
   test('Test Dloader with CurlAdapter and valid URL with progress', () async {
     final adapter = CurlAdapter();
     if (!adapter.isAvailable) {

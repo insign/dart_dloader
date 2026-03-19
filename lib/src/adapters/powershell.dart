@@ -59,6 +59,11 @@ class PowerShellAdapter implements DloaderAdapter {
       }
     }
 
+    final exitCode = await process.exitCode;
+    if (exitCode != 0) {
+      throw Exception('powershell exited with code $exitCode');
+    }
+
     return destination;
   }
 

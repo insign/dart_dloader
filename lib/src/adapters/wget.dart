@@ -65,6 +65,11 @@ class WgetAdapter implements DloaderAdapter {
       }
     }
 
+    final exitCode = await process.exitCode;
+    if (exitCode != 0) {
+      throw Exception('wget exited with code $exitCode');
+    }
+
     return destination;
   }
 

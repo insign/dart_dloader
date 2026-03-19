@@ -67,6 +67,11 @@ class AxelAdapter implements DloaderAdapter {
       }
     }
 
+    final exitCode = await process.exitCode;
+    if (exitCode != 0) {
+      throw Exception('axel exited with code $exitCode');
+    }
+
     return destination;
   }
 

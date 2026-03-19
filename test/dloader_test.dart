@@ -61,6 +61,42 @@ void main() {
     }
   });
 
+  test('Test Dloader with CurlAdapter and invalid URL', () async {
+    final adapter = CurlAdapter();
+    if (!adapter.isAvailable) {
+      print('Skipping test: curl not available');
+      return;
+    }
+
+    await expectLater(() async {
+      final dloader = Dloader(adapter);
+      final destination = File('${Directory.systemTemp.path}/curl_invalid.dat');
+
+      await dloader.download(
+        url: 'https://invalid.supersite/file.dat',
+        destination: destination,
+      );
+    }, throwsException);
+  });
+
+  test('Test Dloader with WgetAdapter and invalid URL', () async {
+    final adapter = WgetAdapter();
+    if (!adapter.isAvailable) {
+      print('Skipping test: wget not available');
+      return;
+    }
+
+    await expectLater(() async {
+      final dloader = Dloader(adapter);
+      final destination = File('${Directory.systemTemp.path}/wget_invalid.dat');
+
+      await dloader.download(
+        url: 'https://invalid.supersite/file.dat',
+        destination: destination,
+      );
+    }, throwsException);
+  });
+
   test('Test Dloader with CurlAdapter and valid URL with progress', () async {
     final adapter = CurlAdapter();
     if (!adapter.isAvailable) {
@@ -143,7 +179,9 @@ void main() {
   test('Test Dloader with default onProgress', () async {
     final dloader = Dloader(DioAdapter());
     final url = 'https://proof.ovh.net/files/1Mb.dat';
-    final destination = File('${Directory.systemTemp.path}/default_progress.dat');
+    final destination = File(
+      '${Directory.systemTemp.path}/default_progress.dat',
+    );
     bool progressCalled = false;
 
     dloader.onProgress = (progress) {
@@ -153,10 +191,7 @@ void main() {
     };
 
     try {
-      final file = await dloader.download(
-        url: url,
-        destination: destination,
-      );
+      final file = await dloader.download(url: url, destination: destination);
 
       expect(file.existsSync(), true);
       expect(file.lengthSync(), 1048576);

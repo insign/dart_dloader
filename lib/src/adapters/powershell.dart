@@ -9,7 +9,6 @@ import '../dloader_adapter.dart';
 /// This class implements [DloaderAdapter] for downloading using powershell.
 class PowerShellAdapter implements DloaderAdapter {
   /// The [Executable] object representing the `powershell` executable.
-  @override
   Executable executable = Executable('powershell');
 
   /// Whether the powershell executable is available on the system.
@@ -17,7 +16,6 @@ class PowerShellAdapter implements DloaderAdapter {
   late final bool isAvailable;
 
   /// The path to the powershell executable.
-  @override
   String? executablePath;
 
   /// Constructor that initializes the [isAvailable] flag.

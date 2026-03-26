@@ -9,7 +9,6 @@ import '../dloader_adapter.dart';
 /// This class implements [DloaderAdapter] for downloading using curl.
 class CurlAdapter implements DloaderAdapter {
   /// The [Executable] object representing the `curl` executable.
-  @override
   Executable executable = Executable('curl');
 
   /// Whether the curl executable is available on the system.
@@ -17,7 +16,6 @@ class CurlAdapter implements DloaderAdapter {
   late final bool isAvailable;
 
   /// The path to the curl executable.
-  @override
   String? executablePath;
 
   /// Constructor that initializes the [isAvailable] flag.

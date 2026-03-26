@@ -7,7 +7,6 @@ import '../dloader_adapter.dart';
 /// This class implements [DloaderAdapter] for downloading using axel.
 class AxelAdapter implements DloaderAdapter {
   /// The [Executable] object representing the `axel` executable.
-  @override
   Executable executable = Executable('axel');
 
   /// Whether the axel executable is available on the system.
@@ -15,7 +14,6 @@ class AxelAdapter implements DloaderAdapter {
   late final bool isAvailable;
 
   /// The path to the axel executable.
-  @override
   String? executablePath;
 
   /// Constructor that initializes the [isAvailable] flag.

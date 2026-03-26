@@ -73,7 +73,7 @@ class Dloader {
   }) async {
     if (!adapter.isAvailable) {
       throw Exception(
-        'Dloader adapter ${adapter.executable.cmd} not available',
+        'Dloader adapter ${adapter.runtimeType} not available',
       );
     }
 

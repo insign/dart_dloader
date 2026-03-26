@@ -1,17 +1,10 @@
 import 'dart:io';
 import 'package:dloader/dloader.dart';
-import 'package:executable/executable.dart';
 import 'package:test/test.dart';
 
 class MockAdapter implements DloaderAdapter {
   @override
-  Executable executable = Executable('mock');
-
-  @override
   bool isAvailable = true;
-
-  @override
-  String? executablePath = '/bin/mock';
 
   @override
   Future<File> download({

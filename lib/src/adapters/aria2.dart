@@ -10,7 +10,6 @@ import '../dloader_adapter.dart';
 /// This class implements the [DloaderAdapter] interface and is used to download files using the `aria2c` executable.
 class Aria2Adapter implements DloaderAdapter {
   /// The [Executable] object representing the `aria2c` executable.
-  @override
   Executable executable = Executable('aria2c');
 
   /// Whether the aria2c executable is available on the system.
@@ -18,7 +17,6 @@ class Aria2Adapter implements DloaderAdapter {
   late final bool isAvailable;
 
   /// The path to the aria2c executable.
-  @override
   String? executablePath;
 
   /// Constructor that initializes the [isAvailable] flag.

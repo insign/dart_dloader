@@ -1,23 +1,14 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:executable/executable.dart';
 
 import '../dloader_adapter.dart';
 
 /// This class implements the [DloaderAdapter] interface for downloading using [Dio].
 class DioAdapter implements DloaderAdapter {
-  /// The [Executable] object representing the `cp` executable, which is here just to satisfy the [DloaderAdapter] interface.
-  @override
-  Executable executable = Executable('cp');
-
-  /// Whether the `cp` executable is available on the system, which is here just to satisfy the [DloaderAdapter] interface.
+  /// Whether the [Dio] adapter is available on the system.
   @override
   late final bool isAvailable;
-
-  /// The path to the `cp` executable, which is here just to satisfy the [DloaderAdapter] interface.
-  @override
-  String? executablePath;
 
   /// Constructor that initializes the [isAvailable] flag.
   DioAdapter() {

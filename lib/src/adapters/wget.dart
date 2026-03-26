@@ -9,7 +9,6 @@ import '../dloader_adapter.dart';
 /// This class implements [DloaderAdapter] for downloading using wget.
 class WgetAdapter implements DloaderAdapter {
   /// The [Executable] object representing the `wget` executable.
-  @override
   Executable executable = Executable('wget');
 
   /// Whether the wget executable is available on the system.
@@ -17,7 +16,6 @@ class WgetAdapter implements DloaderAdapter {
   late final bool isAvailable;
 
   /// The path to the wget executable.
-  @override
   String? executablePath;
 
   /// Constructor that initializes the [isAvailable] flag.

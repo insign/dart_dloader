@@ -1,17 +1,9 @@
 import 'dart:io';
 
-import 'package:executable/executable.dart';
-
 /// Abstract class for the download adapter used by [Dloader].
 abstract class DloaderAdapter {
-  /// Executable of the adapter.
-  late final Executable executable;
-
   /// Flag indicating if the adapter is available or not.
   late final bool isAvailable;
-
-  /// Path to the executable.
-  String? executablePath;
 
   /// Downloads the file from the given [url] to the specified [destination] file.
   ///

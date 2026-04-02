@@ -87,6 +87,10 @@ class Dloader {
       throw Exception('URL not provided');
     }
 
+    if (!destination.parent.existsSync()) {
+      destination.parent.createSync(recursive: true);
+    }
+
     int attempts = 0;
     while (true) {
       try {

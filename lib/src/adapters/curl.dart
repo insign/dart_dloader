@@ -42,7 +42,6 @@ class CurlAdapter implements DloaderAdapter {
   }) async {
     executablePath ??= (await executable.find())!;
     final args = [
-      '--create-dirs',
       '--location',
       '--fail',
       if (userAgent != null) ...['--user-agent', userAgent],

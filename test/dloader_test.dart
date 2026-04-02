@@ -202,4 +202,31 @@ void main() {
       }
     }
   });
+
+  test(
+    'Test Dloader creates destination directory if it does not exist',
+    () async {
+      final dloader = Dloader.auto();
+      final url = 'https://proof.ovh.net/files/1Mb.dat';
+      final dir = Directory(
+        '${Directory.systemTemp.path}/dloader_test_auto_dir',
+      );
+      final destination = File('${dir.path}/1Mb.dat');
+
+      try {
+        if (dir.existsSync()) {
+          dir.deleteSync(recursive: true);
+        }
+
+        final file = await dloader.download(url: url, destination: destination);
+
+        expect(file.existsSync(), true);
+        expect(file.lengthSync(), 1048576);
+      } finally {
+        if (dir.existsSync()) {
+          dir.deleteSync(recursive: true);
+        }
+      }
+    },
+  );
 }

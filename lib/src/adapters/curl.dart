@@ -60,12 +60,12 @@ class CurlAdapter implements DloaderAdapter {
 
     final process = await Process.start(executablePath!, args);
 
-    await for (var data in process.stderr.transform(utf8.decoder)) {
-      final lines = data.split(RegExp(r'[\n\r]'));
-      for (final line in lines) {
-        if (line.isNotEmpty) {
-          onProgress?.call(parseProgress(line));
-        }
+    await for (var line
+        in process.stderr
+            .transform(utf8.decoder)
+            .transform(const LineSplitter())) {
+      if (line.isNotEmpty) {
+        onProgress?.call(parseProgress(line));
       }
     }
 

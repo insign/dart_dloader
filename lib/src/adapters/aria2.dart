@@ -74,11 +74,8 @@ class Aria2Adapter implements DloaderAdapter {
 
     final process = await Process.start(executablePath!, args);
 
-    await for (var data in process.stdout.transform(utf8.decoder)) {
-      final lines = data.split('\n');
-      for (final line in lines) {
-        onProgress?.call(parseProgress(line));
-      }
+    await for (var line in process.stdout.transform(utf8.decoder).transform(const LineSplitter())) {
+      onProgress?.call(parseProgress(line));
     }
 
     final exitCode = await process.exitCode;

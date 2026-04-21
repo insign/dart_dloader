@@ -52,11 +52,8 @@ class PowerShellAdapter implements DloaderAdapter {
       'Start-BitsTransfer -Source $url -Destination ${destination.path} ${userAgent != null ? "-UserAgent $userAgent" : ""}}',
     ]);
 
-    await for (var data in process.stdout.transform(utf8.decoder)) {
-      final lines = data.split('\n');
-      for (final line in lines) {
-        onProgress?.call(parseProgress(line));
-      }
+    await for (var line in process.stdout.transform(utf8.decoder).transform(const LineSplitter())) {
+      onProgress?.call(parseProgress(line));
     }
 
     final exitCode = await process.exitCode;

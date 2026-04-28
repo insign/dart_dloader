@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:executable/executable.dart';
 
 import '../dloader_adapter.dart';
+import '../utils/powershell_utils.dart';
 
 /// This class implements [DloaderAdapter] for downloading using powershell.
 class PowerShellAdapter implements DloaderAdapter {
@@ -47,11 +48,15 @@ class PowerShellAdapter implements DloaderAdapter {
       );
     }
     executablePath ??= (await executable.find())!;
+
+    final escapedUrl = PowerShellUtils.escapeLiteral(url);
+    final escapedDest = PowerShellUtils.escapeLiteral(destination.path);
     final String userAgentArg = userAgent != null
-        ? '-UserAgent "$userAgent"'
+        ? '-UserAgent ${PowerShellUtils.escapeLiteral(userAgent)}'
         : '';
+
     final String command =
-        'Start-BitsTransfer -Source "$url" -Destination "${destination.path}" $userAgentArg'
+        'Start-BitsTransfer -Source $escapedUrl -Destination $escapedDest $userAgentArg'
             .trim();
 
     final process = await Process.start(executablePath!, ['-Command', command]);

@@ -58,16 +58,20 @@ class WgetAdapter implements DloaderAdapter {
 
     final process = await Process.start(executablePath!, args);
 
-    await for (var line in process.stderr.transform(utf8.decoder).transform(const LineSplitter())) {
-      onProgress?.call(parseProgress(line));
-    }
+    try {
+      await for (var line in process.stderr.transform(utf8.decoder).transform(const LineSplitter())) {
+        onProgress?.call(parseProgress(line));
+      }
 
-    final exitCode = await process.exitCode;
-    if (exitCode != 0) {
-      throw Exception('wget exited with code $exitCode');
-    }
+      final exitCode = await process.exitCode;
+      if (exitCode != 0) {
+        throw Exception('wget exited with code $exitCode');
+      }
 
-    return destination;
+      return destination;
+    } finally {
+      process.kill();
+    }
   }
 
   /// Parses the progress string from wget.

@@ -74,16 +74,20 @@ class Aria2Adapter implements DloaderAdapter {
 
     final process = await Process.start(executablePath!, args);
 
-    await for (var line in process.stdout.transform(utf8.decoder).transform(const LineSplitter())) {
-      onProgress?.call(parseProgress(line));
-    }
+    try {
+      await for (var line in process.stdout.transform(utf8.decoder).transform(const LineSplitter())) {
+        onProgress?.call(parseProgress(line));
+      }
 
-    final exitCode = await process.exitCode;
-    if (exitCode != 0) {
-      throw Exception('aria2c exited with code $exitCode');
-    }
+      final exitCode = await process.exitCode;
+      if (exitCode != 0) {
+        throw Exception('aria2c exited with code $exitCode');
+      }
 
-    return destination;
+      return destination;
+    } finally {
+      process.kill();
+    }
   }
 
   /// Parses the progress string output by the aria2c executable and returns a [Map] containing the progress information.

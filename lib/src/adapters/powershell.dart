@@ -61,19 +61,23 @@ class PowerShellAdapter implements DloaderAdapter {
 
     final process = await Process.start(executablePath!, ['-Command', command]);
 
-    await for (var line
-        in process.stdout
-            .transform(utf8.decoder)
-            .transform(const LineSplitter())) {
-      onProgress?.call(parseProgress(line));
-    }
+    try {
+      await for (var line
+          in process.stdout
+              .transform(utf8.decoder)
+              .transform(const LineSplitter())) {
+        onProgress?.call(parseProgress(line));
+      }
 
-    final exitCode = await process.exitCode;
-    if (exitCode != 0) {
-      throw Exception('powershell exited with code $exitCode');
-    }
+      final exitCode = await process.exitCode;
+      if (exitCode != 0) {
+        throw Exception('powershell exited with code $exitCode');
+      }
 
-    return destination;
+      return destination;
+    } finally {
+      process.kill();
+    }
   }
 
   /// Parses the progress string from the powershell output.

@@ -135,6 +135,14 @@ void main() {
 
     print('Using adapter: ${dloader.adapter.runtimeType}');
 
+    if (destination.existsSync()) {
+      destination.deleteSync();
+    }
+    final stFile = File('${destination.path}.st');
+    if (stFile.existsSync()) {
+      stFile.deleteSync();
+    }
+
     try {
       final file = await dloader.download(
         url: url,

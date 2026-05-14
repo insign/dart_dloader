@@ -40,10 +40,6 @@ class AxelAdapter implements DloaderAdapter {
   }) async {
     executablePath ??= (await executable.find())!;
 
-    if (destination.existsSync()) {
-      destination.deleteSync();
-    }
-
     final args = [
       url,
       '--num-connections=$segments',

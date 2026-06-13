@@ -1,3 +1,7 @@
+## v1.5.1
+- fix: correct downloaded bytes parsing in CurlAdapter
+- chore: add release notes for automated pub.dev publishing
+
 ## v1.3.0
 - feat: Add Dloader.auto() factory for automatic adapter selection
 - refactor: Use relative imports in all adapters to avoid circular dependencies

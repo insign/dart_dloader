@@ -87,7 +87,7 @@ class CurlAdapter implements DloaderAdapter {
     if (match != null && match.groupCount == 12) {
       progress["percentComplete"] = match.group(1)!;
       progress["totalSize"] = match.group(2)!;
-      progress["downloaded"] = match.group(3)!;
+      progress["downloaded"] = match.group(4)!;
       progress["averageSpeed"] = match.group(7)!;
       progress["totalTime"] = match.group(9)!;
       progress["spentTime"] = match.group(10)!;

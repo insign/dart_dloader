@@ -38,6 +38,42 @@ void main() {
     }, throwsException);
   });
 
+  test('Test Dloader with Aria2Adapter and invalid URL', () async {
+    final adapter = Aria2Adapter();
+    if (!adapter.isAvailable) {
+      print('Skipping test: aria2c not available');
+      return;
+    }
+
+    await expectLater(() async {
+      final dloader = Dloader(adapter);
+      final destination = File('${Directory.systemTemp.path}/aria2_invalid.dat');
+
+      await dloader.download(
+        url: 'https://invalid.supersite/file.dat',
+        destination: destination,
+      );
+    }, throwsException);
+  });
+
+  test('Test Dloader with AxelAdapter and invalid URL', () async {
+    final adapter = AxelAdapter();
+    if (!adapter.isAvailable) {
+      print('Skipping test: axel not available');
+      return;
+    }
+
+    await expectLater(() async {
+      final dloader = Dloader(adapter);
+      final destination = File('${Directory.systemTemp.path}/axel_invalid.dat');
+
+      await dloader.download(
+        url: 'https://invalid.supersite/file.dat',
+        destination: destination,
+      );
+    }, throwsException);
+  });
+
   test('Test Dloader reuse CurlAdapter', () async {
     final adapter = CurlAdapter();
     if (!adapter.isAvailable) {

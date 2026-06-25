@@ -82,6 +82,9 @@ class Dloader {
     }
 
     segments = (segments ?? 1).abs();
+    if (segments == 0) {
+      segments = 1;
+    }
 
     if (url.isEmpty) {
       throw Exception('URL not provided');

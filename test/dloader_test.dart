@@ -237,4 +237,29 @@ void main() {
       }
     },
   );
+
+  test('Test Dloader with segments: 0', () async {
+    final dloader = Dloader.auto();
+    final url = 'https://proof.ovh.net/files/1Mb.dat';
+    final destination = File('${Directory.systemTemp.path}/segments_0.dat');
+
+    try {
+      if (destination.existsSync()) {
+        destination.deleteSync();
+      }
+
+      final file = await dloader.download(
+        url: url,
+        destination: destination,
+        segments: 0,
+      );
+
+      expect(file.existsSync(), true);
+      expect(file.lengthSync(), 1048576);
+    } finally {
+      if (destination.existsSync()) {
+        destination.deleteSync();
+      }
+    }
+  });
 }
